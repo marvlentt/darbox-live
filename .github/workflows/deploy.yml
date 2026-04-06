@@ -41,6 +41,9 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Include Pitch Presentation
+        run: cp -r darbox-pitch dist/darbox-pitch
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
