@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DarBox - Présentation Pitch (FR)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --bg-alt: #161b22;
+      --text: #ffffff;
+      --accent: #1A7A4A;
+      --accent-light: #22c55e;
+      --font-display: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-snap-type: y mandatory; overflow-y: scroll; scroll-behavior: smooth; }
+    body { font-family: var(--font-body); background: linear-gradient(135deg, var(--bg) 0%, var(--bg-alt) 100%); color: var(--text); }
+
+    /* ── SLIDE UNIT ── */
+    .slide {
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      padding: clamp(32px, 6vw, 80px) clamp(24px, 8vw, 120px);
+    }
+
+    /* ── TYPOGRAPHY SCALE ── */
+    h1, h2, h3, h4, .t-hero, .t-title, .t-stat { font-family: var(--font-display); }
+    .t-hero  { font-size: clamp(2.5rem, 7vw, 5rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; }
+    .t-title { font-size: clamp(1.8rem, 4vw, 3.2rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; }
+    .t-sub   { font-size: clamp(1rem, 2vw, 1.4rem); font-weight: 400; line-height: 1.55; opacity: 0.8; }
+    .t-body  { font-size: clamp(0.875rem, 1.5vw, 1.1rem); line-height: 1.7; opacity: 0.7; }
+    .t-label { font-size: clamp(0.7rem, 1vw, 0.85rem); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600; color: var(--accent-light); }
+    .t-stat  { font-size: clamp(3rem, 9vw, 6rem); font-weight: 900; line-height: 1; letter-spacing: -0.04em; }
+
+    /* ── REVEAL ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(clamp(16px, 3vh, 32px));
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .slide.visible .reveal { opacity: 1; transform: translateY(0); }
+    .reveal:nth-child(1) { transition-delay: 0.05s; }
+    .reveal:nth-child(2) { transition-delay: 0.15s; }
+    .reveal:nth-child(3) { transition-delay: 0.25s; }
+    .reveal:nth-child(4) { transition-delay: 0.35s; }
+    .reveal:nth-child(5) { transition-delay: 0.45s; }
+    .reveal:nth-child(6) { transition-delay: 0.55s; }
+    .reveal-right { transform: translateX(80px) !important; }
+    .reveal-scale { transform: scale(0.92) !important; }
+    .slide.visible .reveal-right, .slide.visible .reveal-scale { transform: none !important; opacity: 1; }
+
+    /* ── UI ELEMENTS ── */
+    .progress-bar { position: fixed; top: 0; left: 0; z-index: 100; height: 3px; width: 0%; background: var(--accent-light); transition: width 0.35s ease; }
+    .nav-dots { position: fixed; right: 20px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; z-index: 50; }
+    .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: #fff; opacity: 0.2; cursor: pointer; transition: all 0.25s ease; border: none; padding: 0; }
+    .nav-dot.active { opacity: 1; background: var(--accent-light); transform: scale(1.4); }
+    .key-hint { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); font-size: 11px; opacity: 0.3; transition: opacity 0.5s; pointer-events: none; }
+    .slide-num { position: absolute; bottom: 24px; right: 32px; font-size: 11px; opacity: 0.2; letter-spacing: 0.05em; font-family: var(--font-body); }
+    
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 80px); align-items: center; }
+    .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: clamp(16px, 3vw, 48px); }
+    .center-col { display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .stat-grid { display: flex; gap: clamp(24px, 5vw, 64px); align-items: flex-end; flex-wrap: wrap; }
+    .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: clamp(20px, 3vw, 36px); backdrop-filter: blur(10px); }
+    .pill { display: inline-block; padding: 6px 14px; border-radius: 20px; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); font-size: 12px; font-weight: 600; color: var(--accent-light); margin-bottom: 20px; }
+    .bullet-list { list-style: none; display: flex; flex-direction: column; gap: 16px; margin-top: 24px; }
+    .bullet-list li { display: flex; gap: 16px; align-items: flex-start; }
+    .bullet-list li .icon { font-weight: 800; font-size: 1.2rem; flex-shrink: 0; line-height: 1.4; }
+
+    .speaker-notes {
+      display: none; position: fixed; bottom: 20px; left: 20px; right: 60px;
+      background: rgba(0,0,0,0.95); color: #fff; padding: 24px; border-radius: 12px;
+      font-size: 14px; line-height: 1.6; z-index: 200; border-left: 4px solid var(--accent-light);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5); max-height: 40vh; overflow-y: auto;
+    }
+    .speaker-notes p { margin-bottom: 12px; }
+    .notes-header { font-weight: bold; color: var(--accent-light); margin-bottom: 8px; font-size: 12px; text-transform: uppercase; }
+
+    @media (max-width: 768px) {
+      .nav-dots, .key-hint { display: none; }
+      .two-col, .three-col { grid-template-columns: 1fr; gap: 24px; }
+      .slide { padding: 40px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar"></div>
+  <nav class="nav-dots"></nav>
+  <span class="key-hint">↓ ESPACE pour avancer · 'N' pour afficher les notes</span>
+
+  <!-- ==================== SLIDE 1: COVER & FOUNDER ==================== -->
+  <section class="slide">
+    <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none;">
+      <div style="position:absolute;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle, rgba(26,122,74,0.15) 0%, transparent 70%);top:-300px;right:-300px;"></div>
+    </div>
+    <div class="two-col" style="height: 100%;">
+      <div>
+        <div class="pill reveal">Pitch PIE 2025 · Startup</div>
+        <h1 class="t-hero reveal">
+          La tranquillité d'esprit,<br>
+          <span style="color:var(--accent-light);">livrée dans une boîte.</span>
+        </h1>
+        <p class="t-sub reveal" style="margin-top:24px; max-width: 480px;">
+          Branchez. Protégez. Respirez. Le bouclier réseau préconfiguré pour les familles de Tanger.
+        </p>
+      </div>
+      <div class="reveal-right reveal card" style="background: rgba(255,255,255,0.02)">
+        <div class="t-label">Fondateur</div>
+        <h3 class="t-title" style="font-size: 1.8rem; margin: 8px 0;">Merouan El Hattaki</h3>
+        <p class="t-body">OFPPT ISMONTIC · 2ème année<br>Spécialité : Infrastructure Digitale</p>
+        <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <span style="font-size: 12px; border: 1px solid rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 100px;">Systèmes et Réseaux</span>
+          <span style="font-size: 12px; border: 1px solid rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 100px;">React / Frontend</span>
+          <span style="font-size: 12px; border: 1px solid rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 100px; color: var(--accent-light); border-color: var(--accent-light);">Zéro coût de sous-traitance</span>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">01</div>
+    <aside class="speaker-notes">
+      <div class="notes-header">Diapositive 1 : Intro & Fondateur</div>
+      <p>"Bonjour honorable jury. Je suis Merouan El Hattaki, étudiant en 2ème année à l'ISMONTIC de Tanger en Infrastructure Digitale (Systèmes et Réseaux)."</p>
+      <p>"Je vous présente aujourd'hui DarBox : 'La tranquillité d'esprit, livrée dans une boîte'. C'est un routeur familial préconfiguré qui filtre internet à la source."</p>
+      <p>"La grande force de ce projet, c'est ma double compétence. J'ai configuré l'infrastructure réseau backend, ET j'ai développé l'interface frontend en React et Tailwind de A à Z. Cela garantit un produit maîtrisé sans coût d'agence."</p>
+    </aside>
+  </section>
+
+  <!-- ==================== SLIDE 2: PERSONA & PROBLEM ==================== -->
+  <section class="slide">
+    <div class="two-col">
+      <div>
+        <div class="t-label reveal">LE PROBLÈME</div>
+        <h2 class="t-title reveal" style="margin-top: 12px; margin-bottom: 24px;">Les Parents face<br>au Far Web</h2>
+        <ul class="bullet-list reveal">
+          <li><span class="icon">😰</span><span class="t-body"><strong>Contenus dangereux :</strong> Malwares, jeux d'argent et sites adultes accessibles immédiatement.</span></li>
+          <li><span class="icon">📱</span><span class="t-body"><strong>Aucun contrôle simple :</strong> Les apps se désinstallent en 30s. L'enfant contourne tout le reste.</span></li>
+          <li><span class="icon">🌙</span><span class="t-body"><strong>Nuits sans règles :</strong> Difficile d'éteindre le Wi-Fi le soir sans pénaliser les parents qui travaillent.</span></li>
+        </ul>
+      </div>
+      <div class="reveal-scale reveal">
+        <div class="card" style="border: 1px solid #ff444433; background: linear-gradient(180deg, rgba(255,0,0,0.05) 0%, transparent 100%); padding: 36px;">
+          <div class="t-label" style="color: #ffaaaa;">BUYER PERSONA</div>
+          <h3 class="t-title" style="font-size: 1.5rem; margin-top: 8px;">Khadija Bensaid</h3>
+          <p class="t-body" style="font-size: 0.85rem;">38 ans · Mère de 3 enfants · Tanger</p>
+          <div style="margin-top: 24px; padding-left: 16px; border-left: 3px solid #ff444455;">
+            <p style="font-style: italic; opacity: 0.9;">« Je veux protéger mes enfants le soir, mais je ne suis pas informaticienne. Les applications coûtent trop cher et sont trop dures à régler. »</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">02</div>
+    <aside class="speaker-notes">
+      <div class="notes-header">Diapositive 2 : Le Problème & Persona</div>
+      <p>"Pour comprendre la valeur de DarBox, regardons Khadija, notre client-type. Elle habite à Tanger, a 3 enfants, et se sent démunie face aux écrans."</p>
+      <p>"Aujourd'hui, l'internet fourni par IAM, Orange ou Inwi n'est pas sécurisé. Les applications de contrôle parental sont compliquées, coûtent cher en abonnement mensuel, et les enfants savent les désinstaller en 30 secondes."</p>
+      <p>"Khadija veut juste désactiver le Wi-Fi de ses enfants à 22h, et bloquer les contenus dangereux, sans que cela coupe sa propre connexion ou requiert un diplôme en informatique."</p>
+    </aside>
+  </section>
+
+  <!-- ==================== SLIDE 3: THE SOLUTION & DEMO ==================== -->
+  <section class="slide">
+    <div class="center-col reveal" style="margin-bottom: 40px;">
+      <div class="t-label">LA SOLUTION DARBOX</div>
+      <h2 class="t-title" style="margin-top: 8px;">3 Étapes. Zéro Compétence Requise.</h2>
+    </div>
+    
+    <div class="two-col reveal">
+      <div class="card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px;">
+        <div style="width: 250px; height: 250px; background: #fff; border-radius: 16px; display: flex; align-items: center; justify-content: center; position: relative;">
+          <div style="position: absolute; width: 100%; height: 100%; border: 4px dashed var(--accent-light); border-radius: 16px; top: 0; left: 0; pointer-events: none;"></div>
+          <div style="text-align: center;">
+            <p style="color: #000; font-weight: 800; font-family: var(--font-display); font-size: 1.2rem; line-height: 1.2;">[ GRAND<br>QR CODE ICI ]</p>
+            <p style="color: #666; font-size: 0.8rem; margin-top: 8px;">Démonstration Vercel</p>
+          </div>
+        </div>
+        <div class="t-label" style="margin-top: 24px; color: #fff;">Scannez pour tester l'interface</div>
+      </div>
+      <div>
+        <ul class="bullet-list">
+          <li><span class="icon">📦</span><span class="t-body"><strong>Commandez :</strong> Vous recevez un routeur totalement préconfiguré par nos soins.</span></li>
+          <li><span class="icon">🔌</span><span class="t-body"><strong>Branchez :</strong> Un câble derrière la box opérateur, et le routeur démarre seul en 5 minutes.</span></li>
+          <li><span class="icon">🛡️</span><span class="t-body"><strong>Protégez :</strong> Réseau 'Maison_Enfants' isolé et géré via notre belle interface web !</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-num">03</div>
+    <aside class="speaker-notes">
+      <div class="notes-header">Diapositive 3 : Solution & Demo Live</div>
+      <p>"Nous apportons la solution : DarBox, un bouclier réseau préconfiguré fonctionnant avec tous les opérateurs."</p>
+      <p>"(ACTION : Montrer le QR code du doigt). J'invite les membres du jury à scanner ce QR Code massif. Il vous redirigera directement vers la démo interactive de notre plateforme, hébergée en direct sur Vercel."</p>
+      <p>"En naviguant sur l'interface, vous testez l'expérience Premium offerte aux parents. Tout le travail technique est caché : le parent branche le DarBox derrière sa box internet classique, et c'est tout, le réseau WiFi pour les enfants est prêt et sécurisé."</p>
+    </aside>
+  </section>
+
+  <!-- ==================== SLIDE 4: THE OFFERS ==================== -->
+  <section class="slide">
+    <div class="two-col">
+      <div>
+        <div class="t-label reveal">CATALOGUE DES OFFRES</div>
+        <h2 class="t-title reveal" style="margin-top: 12px; margin-bottom: 24px;">Matériel &amp;<br>Expertise Numérique</h2>
+        <p class="t-body reveal">Un seul paiement. Zéro abonnement mensuel caché.</p>
+        <div class="reveal" style="margin-top: 24px;">
+           <span style="display:block; font-style: italic; opacity: 0.8; padding-left: 12px; border-left: 3px solid var(--accent-light);">
+             "Je vous invite à parcourir les catalogues imprimés placés sur votre table pour les détails complets."
+           </span>
+        </div>
+      </div>
+      <div class="reveal-right reveal" style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="card" style="padding: 24px; border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.05);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <h3 class="t-title" style="font-size: 1.2rem;">Les Packs Routeur</h3>
+              <p class="t-body" style="font-size: 0.85rem; margin-top: 4px;">Essentiel, Couvre-feu, Anti-Distraction...<br>Routeur fourni &amp; configuré.</p>
+            </div>
+            <div style="text-align: right;">
+              <div class="t-label" style="font-size: 0.7rem; color: #aaa;">À PARTIR DE</div>
+              <div style="font-size: 1.6rem; font-weight: 800; font-family: var(--font-display); color: var(--accent-light);">400 DH</div>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="padding: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <h3 class="t-title" style="font-size: 1.2rem;">Service de Configuration</h3>
+              <p class="t-body" style="font-size: 0.85rem; margin-top: 4px;">Le client possède déjà un routeur ?<br>Nous le configurons pour lui (à distance/domicile).</p>
+            </div>
+            <div style="text-align: right;">
+              <div class="t-label" style="font-size: 0.7rem; color: #aaa;">À PARTIR DE</div>
+              <div style="font-size: 1.6rem; font-weight: 800; font-family: var(--font-display);">150 DH</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">04</div>
+    <aside class="speaker-notes">
+      <div class="notes-header">Diapositive 4 : Les Offres</div>
+      <p>"Chers membres du jury, vous trouverez devant vous notre catalogue imprimé, démontrant notre transparence tarifaire."</p>
+      <p>"Nous proposons 4 packs physiques, allant de l'Essentiel (à 400 DH) jusqu'au Pack Maison complet. Vous payez l'achat du matériel et son pré-paramétrage en une seule fois, sans coûts mensuels."</p>
+      <p>"Mais la vraie nouveauté, c'est que nous vendons aussi notre expertise séparément : le service de Configuration. Pour 150 DH, via TeamViewer ou à domicile, je configure le routeur existant du client avec notre sécurité DNS."</p>
+    </aside>
+  </section>
+
+  <!-- ==================== SLIDE 5: COMMITMENTS ==================== -->
+  <section class="slide">
+    <div class="center-col reveal" style="margin-bottom: 56px;">
+      <div class="t-label">CHARTE D'ENGAGEMENTS</div>
+      <h2 class="t-title" style="margin-top: 8px;">Nos Promesses Fondamentales</h2>
+    </div>
+    
+    <div class="three-col">
+      <div class="card reveal" style="text-align: center;">
+        <div style="font-size: 2.5rem; margin-bottom: 20px;">🛡️</div>
+        <h3 class="t-title" style="font-size: 1.2rem; margin-bottom: 12px;">Blocage Natif DNS</h3>
+        <p class="t-body" style="font-size: 0.9rem;">Neutralisation des sites pour adultes, jeux d'argent et malwares au niveau du réseau, infaillible.</p>
+      </div>
+      <div class="card reveal" style="text-align: center;">
+        <div style="font-size: 2.5rem; margin-bottom: 20px;">🔌</div>
+        <h3 class="t-title" style="font-size: 1.2rem; margin-bottom: 12px;">True Plug &amp; Play</h3>
+        <p class="t-body" style="font-size: 0.9rem;">Installation simplifiée à l'extrême. Aucun paramétrage logiciel n'est laissé à la charge des parents.</p>
+      </div>
+      <div class="card reveal" style="text-align: center;">
+        <div style="font-size: 2.5rem; margin-bottom: 20px;">🇲🇦</div>
+        <h3 class="t-title" style="font-size: 1.2rem; margin-bottom: 12px;">Support de Proximité</h3>
+        <p class="t-body" style="font-size: 0.9rem;">Assistance réactive sur WhatsApp, garantie 30 jours, et intervention locale à Tanger.</p>
+      </div>
+    </div>
+    <div class="slide-num">05</div>
+    <aside class="speaker-notes">
+      <div class="notes-header">Diapositive 5 : Charte des Engagements</div>
+      <p>"Pour construire une marque premium dans la technologie locale, nos engagements sont absolus."</p>
+      <p>"Premièrement : Sécurité par le blocage natif DNS. Les contenus dangereux n'atteignent jamais l'appareil de l'enfant. Deuxièmement : le Plug and Play total. C'est l'anti-complexité."</p>
+      <p>"Troisièmement : Un support de proximité. Si notre client à Tanger a le moindre problème technique, il a un humain qualifié sur WhatsApp qui lui répond, et non un centre d'appel lointain."</p>
+    </aside>
+  </section>
+
+  <!-- ==================== SLIDE 6: BUSINESS MODEL CANVAS ==================== -->
+  <section class="slide">
+    <div class="center-col reveal" style="margin-bottom: 40px;">
+      <h2 class="t-title">Business Model Canvas</h2>
+      <p class="t-sub" style="margin-top: 8px;">Aperçu stratégique simplifié</p>
+    </div>
+    
+    <div class="three-col reveal" style="gap: 24px;">
+      <div class="card" style="border-top: 4px solid var(--accent-light);">
+        <h3 class="t-label" style="font-size: 0.8rem;">Partenaires Clés</h3>
+        <ul class="bullet-list" style="margin-top: 16px; gap: 8px;">
+          <li><span class="icon" style="font-size:12px;">›</span><span class="t-body" style="font-size: 0.9rem;">Grossistes hardware</span></li>
+          <li><span class="icon" style="font-size:12px;">›</span><span class="t-body" style="font-size: 0.9rem;">Livreurs locaux (Tanger)</span></li>
+          <li><span class="icon" style="font-size:12px;">›</span><span class="t-body" style="font-size: 0.9rem;">Associations de parents</span></li>
+        </ul>
+      </div>
+      
+      <div class="card" style="border-top: 4px solid var(--accent-light);">
+        <h3 class="t-label" style="font-size: 0.8rem;">Proposition de Valeur</h3>
+        <ul class="bullet-list" style="margin-top: 16px; gap: 8px;">
+          <li><span class="icon" style="font-size:12px;">›</span><span class="t-body" style="font-size: 0.9rem;">Tranquillité d'esprit garantie</span></li>
+          <li><span class="icon" style="font-size:12px;">›</span><span class="t-body" style="font-size: 0.9rem;">Zéro compétence requise</span></li>
+          <li><span class="icon" style="font-size:12px;">›</span><span class="t-body" style="font-size: 0.9rem;">Paiement unique (sans abonnement)</span></li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-top: 4px solid var(--accent-light);">
+        <h3 class="t-label" style="font-size: 0.8rem;">Canaux</h3>
+        <ul class="bullet-list" style="margin-top: 16px; gap: 8px;">
+          <li><span class="icon" style="font-size:12px;">›</span><span class="t-body" style="font-size: 0.9rem;">Plateforme E-commerce React</span></li>
+          <li><span class="icon" style="font-size:12px;">›</span><span class="t-body" style="font-size: 0.9rem;">Campagnes Meta Ads locales</span></li>
+          <li><span class="icon" style="font-size:12px;">›</span><span class="t-body" style="font-size: 0.9rem;">Notre Newsletter gratuite</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-num">06</div>
+    <aside class="speaker-notes">
+      <div class="notes-header">Diapositive 6 : Business Model Canvas</div>
+      <p>"En regardant notre BMC, notre moteur stratégique repose sur 3 piliers."</p>
+      <p>"Nous générons de la marge en nous sourçant chez des grossistes matériels fiables, et nous assurons le service avec une force de livraison locale à Tanger."</p>
+      <p>"Le tout soutient une proposition de valeur indéniable (la sécurité familiale sans effort), distribuée à travers un écosystème numérique maîtrisé : notre magnifique site e-commerce et des campagnes sociales précises."</p>
+    </aside>
+  </section>
+
+  <!-- ==================== SLIDE 7: GO-TO-MARKET ==================== -->
+  <section class="slide">
+    <div class="two-col">
+      <div class="reveal">
+        <div class="t-label">GO-TO-MARKET</div>
+        <h2 class="t-title" style="margin-top: 12px; margin-bottom: 24px;">Acquisition &amp; Rétention</h2>
+        <p class="t-body">Un écosystème conçu pour éduquer avant de vendre.</p>
+      </div>
+      <div class="reveal-right reveal">
+        <ul class="bullet-list">
+          <li class="card" style="padding: 20px; background: rgba(34, 197, 94, 0.05); border-color: rgba(34, 197, 94, 0.2);">
+            <div style="display:flex; flex-direction:column;">
+              <span class="t-label" style="margin-bottom:8px; display:inline-block;">1. Stratégie de Pénétration (400 DH)</span>
+              <span class="t-body">Entrée accessible pour instaurer la confiance, suivi d'un upsell naturel vers le Pack Maison ou Couvre-feu.</span>
+            </div>
+          </li>
+          <li class="card" style="padding: 20px;">
+            <div style="display:flex; flex-direction:column;">
+              <span class="t-label" style="margin-bottom:8px; display:inline-block;">2. Newsletter « DarBox »</span>
+              <span class="t-body">Un guide gratuit ('5 réflexes pour un internet plus sûr') distribué sur WhatsApp/Email pour fidéliser la communauté parentale.</span>
+            </div>
+          </li>
+          <li class="card" style="padding: 20px;">
+            <div style="display:flex; flex-direction:column;">
+              <span class="t-label" style="margin-bottom:8px; display:inline-block;">3. Bouche-à-Oreille (Tanger)</span>
+              <span class="t-body">Khadija en parle à sa voisine. Effet de réseau soutenu par les réseaux des écoles locales.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-num">07</div>
+    <aside class="speaker-notes">
+      <div class="notes-header">Diapositive 7 : Go-To-Market</div>
+      <p>"Comment conquérir le marché tangérois ? Par la pédagogie."</p>
+      <p>"Premièrement, une offre d'entrée agressive à 400 DH pour installer la confiance, permettant de proposer des 'upsells' vers nos offres supérieures. Ensuite, nous évitons les fuites de visiteurs en leur offrant un Guide Gratuit sur l'internet sécurisé via notre formulaire de Newsletter."</p>
+      <p>"Cela nous permet d'éduquer le parent par email ou WhatsApp, et de transformer un visiteur curieux en client convaincu qui finira par nous recommander."</p>
+    </aside>
+  </section>
+
+  <!-- ==================== SLIDE 8: FINANCIALS ==================== -->
+  <section class="slide">
+    <div class="center-col reveal" style="margin-bottom: 48px;">
+      <div class="t-label">ÉTUDE FINANCIÈRE</div>
+      <h2 class="t-title" style="margin-top: 8px;">Rentable dès la 1ère semaine</h2>
+    </div>
+    
+    <div class="stat-grid reveal" style="justify-content: center;">
+      <div class="card" style="text-align: center; width: 220px;">
+        <div class="t-label" style="margin-bottom: 12px;">Charges Fixes / Mois</div>
+        <div style="font-family: var(--font-display); font-size: 2.5rem; font-weight: 800; color: #aaa;"><span data-count="250">0</span><span style="font-size:1rem;font-weight:600;"> DH</span></div>
+        <div class="t-body" style="font-size: 0.8rem; margin-top: 8px;">Internet · Téléphone · Stock</div>
+      </div>
+      
+      <div style="font-size: 2rem; color: #555; align-self: center;">+</div>
+      
+      <div class="card" style="text-align: center; width: 220px; border-color: rgba(255,255,255,0.2);">
+        <div class="t-label" style="margin-bottom: 12px; color: #fff;">Marge Brute (Moyenne)</div>
+        <div style="font-family: var(--font-display); font-size: 2.5rem; font-weight: 800; color: #fff;"><span data-count="235">0</span><span style="font-size:1rem;font-weight:600;"> DH</span></div>
+        <div class="t-body" style="font-size: 0.8rem; margin-top: 8px;">Modèle Hardware (mix)</div>
+      </div>
+
+      <div style="font-size: 2rem; color: #555; align-self: center;">=</div>
+
+      <div class="card" style="text-align: center; width: 220px; background: rgba(34, 197, 94, 0.08); border-color: rgba(34, 197, 94, 0.3);">
+        <div class="t-label" style="margin-bottom: 12px; color: var(--accent-light);">Point Mort</div>
+        <div style="font-family: var(--font-display); font-size: 2.5rem; font-weight: 800; color: var(--accent-light);"><span data-count="1.1">0.0</span><span style="font-size:1rem;font-weight:600;"> vente</span></div>
+        <div class="t-body" style="font-size: 0.8rem; margin-top: 8px;">Seuil de rentabilité: 6 jours</div>
+      </div>
+    </div>
+    
+    <div class="center-col reveal" style="margin-top: 24px;">
+      <p class="t-body" style="font-size: 0.9rem;">🚀 Bonus : Notre service d'installation seul génère une marge spectaculaire de <strong data-count="87" data-suffix="%">0%</strong>.</p>
+    </div>
+    
+    <div class="slide-num">08</div>
+    <aside class="speaker-notes">
+      <div class="notes-header">Diapositive 8 : Étude Financière</div>
+      <p>"Regardons l'étude financière de plus près. L'efficacité est notre maître-mot."</p>
+      <p>"Nous avons réduit nos charges fixes à environ 250 DH par mois. Prenons notre Marge Brute moyenne pondérée, qui est de 235 DH par unité vendue."</p>
+      <p>"Il nous suffit donc de réaliser moins de 2 ventes par mois (le point mort, soit environ 6 jours de fonctionnement) pour couvrir totalement nos coûts. De plus, notre service de configuration sur-mesure à domicile ne nécessite pas d'achat matériel pour nous, aboutissant à une marge bénéficiaire massive de 87% !"</p>
+    </aside>
+  </section>
+
+  <!-- ==================== SLIDE 9: CONCLUSION ==================== -->
+  <section class="slide" style="background: var(--bg);">
+    <div class="center-col" style="max-width: 700px; margin: 0 auto;">
+      <h1 class="t-hero reveal" style="margin-bottom: 24px;">DarBox</h1>
+      <div class="reveal" style="width: 80px; height: 3px; background: var(--accent-light); margin-bottom: 32px;"></div>
+      
+      <div class="reveal" style="display: flex; gap: 24px; flex-direction: column; align-items: center; margin-bottom: 32px;">
+        <p class="t-body" style="font-size: 1.1rem; max-width: 500px;">
+          <strong>Prochaines étapes :</strong> Validation finale en PFE et début de mon stage pour optimiser les déploiements logiciels à grande échelle.
+        </p>
+      </div>
+
+      <div class="reveal card" style="background: transparent; border-color: rgba(255,255,255,0.1); margin-bottom: 40px;">
+         <p class="t-title" style="font-size: 1.5rem; font-style: italic; color: #fff;">
+          « Chaque routeur DarBox vendu est un enfant de plus protégé à Tanger. »
+        </p>
+      </div>
+
+      <div class="reveal pill" style="padding: 12px 32px; font-size: 1.1rem;">
+        Merci pour votre écoute.
+      </div>
+    </div>
+    <div class="slide-num">09</div>
+    <aside class="speaker-notes">
+      <div class="notes-header">Diapositive 9 : Conclusion</div>
+      <p>"Pour mes prochaines étapes, je finalise le PFE et j'entame mon stage en entreprise pour approfondir la logistique des déploiements SI."</p>
+      <p>"DarBox est la fusion de mes études d'infrastructure et de ma passion pour le design Frontend, construite pour résoudre une urgence locale critique."</p>
+      <p>"Parce qu'au final, les parents n'achètent pas une boîte en plastique, ils achètent de la sécurité. Comme j'aime le dire : chaque routeur DarBox vendu est un enfant de plus protégé à Tanger. Merci pour votre attention, je suis à votre disposition pour vos questions."</p>
+    </aside>
+  </section>
+
+  <!-- ==================== EDITOR & CONTROLS ==================== -->
+  <button onclick="toggleEdit()" style="position:fixed;top:16px;right:16px;z-index:200;background:rgba(0,255,100,0.1);color:#22c55e;border:1px solid rgba(34,197,94,0.3);padding:8px 16px;border-radius:100px;font-size:12px;font-weight:600;font-family:var(--font-body);cursor:pointer;backdrop-filter:blur(10px);">✏️ Édition Interactive</button>
+  <script>
+    let editing = false;
+    function toggleEdit() {
+      editing = !editing;
+      document.querySelectorAll('h1, h2, h3, p, li, blockquote, .t-hero, .t-title, .t-sub, .t-body, .pill, .notes-header').forEach(el => {
+        el.contentEditable = editing;
+        el.style.outline = editing ? '1px dashed rgba(255,255,255,0.4)' : 'none';
+        if(editing) el.focus();
+      });
+      event.target.textContent = editing ? '✓ Terminer Édition' : '✏️ Édition Interactive';
+      event.target.style.background = editing ? 'rgba(255,255,255,0.9)' : 'rgba(0,255,100,0.1)';
+      event.target.style.color = editing ? '#000' : '#22c55e';
+    }
+
+    class DeckController {
+      constructor() {
+        this.slides = document.querySelectorAll('.slide');
+        this.dots = document.querySelectorAll('.nav-dot');
+        this.progressBar = document.querySelector('.progress-bar');
+        this.current = 0;
+        this.init();
+      }
+
+      init() {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              const idx = [...this.slides].indexOf(entry.target);
+              this.updateUI(idx);
+              
+              // Trigger animated counters if present
+              entry.target.querySelectorAll('[data-count]').forEach(el => {
+                if (!el.dataset.animated) {
+                  this.animateCounter(el, parseFloat(el.dataset.count), el.dataset.suffix || '');
+                  el.dataset.animated = 'true';
+                }
+              });
+            }
+          });
+        }, { threshold: 0.5 });
+
+        this.slides.forEach(s => io.observe(s));
+
+        document.addEventListener('keydown', e => {
+          if(editing) return; // disable during editing
+
+          if (['ArrowDown', 'ArrowRight', 'Space'].includes(e.code)) {
+            e.preventDefault();
+            this.goTo(this.current + 1);
+          }
+          if (['ArrowUp', 'ArrowLeft'].includes(e.code)) {
+            e.preventDefault();
+            this.goTo(this.current - 1);
+          }
+          if (e.key === 'n' || e.key === 'N') {
+            document.querySelectorAll('.speaker-notes').forEach(n => {
+              n.style.display = n.style.display === 'none' ? 'block' : 'none';
+            });
+          }
+        });
+
+        this.dots.forEach((dot, i) => dot.addEventListener('click', () => this.goTo(i)));
+      }
+
+      goTo(idx) {
+        if (idx < 0 || idx >= this.slides.length) return;
+        this.slides[idx].scrollIntoView({ behavior: 'smooth' });
+      }
+
+      updateUI(idx) {
+        this.current = idx;
+        const progress = ((idx + 1) / this.slides.length) * 100;
+        if (this.progressBar) this.progressBar.style.width = progress + '%';
+        this.dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+
+      animateCounter(el, target, suffix = '') {
+        const duration = 1400;
+        const start = performance.now();
+        const isFloat = target % 1 !== 0;
+        const update = (time) => {
+          const t = Math.min((time - start) / duration, 1);
+          const eased = Math.max(0, 1 - Math.pow(1 - t, 3));
+          const val = eased * target;
+          
+          if(isFloat) {
+            el.innerHTML = val.toFixed(1) + suffix;
+          } else {
+            el.innerHTML = Math.floor(val) + suffix;
+          }
+          
+          if (t < 1) requestAnimationFrame(update);
+        };
+        requestAnimationFrame(update);
+      }
+    }
+
+    // Auto-generate nav dots
+    const slideElements = document.querySelectorAll('.slide');
+    const navCont = document.querySelector('.nav-dots');
+    slideElements.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'nav-dot';
+      dot.setAttribute('aria-label', `Slide ${i + 1}`);
+      navCont.appendChild(dot);
+    });
+    new DeckController();
+  </script>
+</body>
+</html>

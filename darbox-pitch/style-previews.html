@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DarBox Pitch - Style Previews</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&family=JetBrains+Mono:wght@700&family=Inter:wght@400;700&family=Clash+Display:wght@700&family=Satoshi:wght@400;700&family=Outfit:wght@400;700;800&family=Syne:wght@700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f5f5f5; padding: 40px; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; gap: 40px; }
+    .container { display: flex; gap: 40px; max-width: 1200px; flex-wrap: wrap; justify-content: center; }
+    .card { width: 350px; height: 500px; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; }
+    .card:hover { transform: translateY(-10px); }
+    .card-label { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.9); color: #000; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 14px; z-index: 10; }
+    .preview-slide { flex: 1; padding: 40px 30px; display: flex; flex-direction: column; justify-content: flex-end; position: relative; }
+    .preview-bottom { height: 100px; background: #fff; padding: 20px; border-top: 1px solid #eee; display: flex; flex-direction: column; justify-content: center; }
+    .preview-title { font-weight: bold; font-size: 16px; margin-bottom: 4px; color: #111; }
+    .preview-mood { font-size: 13px; color: #666; }
+    
+    /* Option A: Midnight Executive */
+    .opt-a .preview-slide { background: #1E2761; color: #fff; font-family: 'Lato', sans-serif; }
+    .opt-a h1 { font-family: 'Playfair Display', serif; font-size: 32px; line-height: 1.1; margin-bottom: 12px; }
+    .opt-a .accent { color: #CADCFC; }
+    .opt-a .pill { display: inline-block; padding: 6px 12px; border-radius: 4px; background: rgba(202, 220, 252, 0.1); font-size: 12px; margin-bottom: 16px; border: 1px solid rgba(202, 220, 252, 0.3); }
+
+    /* Option B: Glass & Light (DarBox Premium Theme) */
+    .opt-b .preview-slide { background: linear-gradient(135deg, #0d1117 0%, #161b22 100%); color: #fff; font-family: 'Inter', sans-serif; }
+    .opt-b h1 { font-family: 'Outfit', sans-serif; font-size: 34px; line-height: 1.1; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.03em; }
+    .opt-b .accent { color: #1A7A4A; } /* DarBox Green */
+    .opt-b .pill { display: inline-block; padding: 6px 14px; border-radius: 20px; background: rgba(26, 122, 74, 0.15); color: #22c55e; font-size: 12px; margin-bottom: 16px; font-weight: 600; border: 1px solid rgba(26, 122, 74, 0.3); }
+    .opt-b .glass-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 16px; border-radius: 12px; margin-top: 20px; backdrop-filter: blur(10px); }
+
+    /* Option C: Forest & Moss */
+    .opt-c .preview-slide { background: #0F1F12; color: #F5F0E8; font-family: 'DM Sans', sans-serif; }
+    .opt-c h1 { font-family: 'Syne', sans-serif; font-size: 36px; line-height: 1.05; font-weight: 800; margin-bottom: 16px; }
+    .opt-c .accent { color: #22A663; }
+    .opt-c .pill { display: inline-block; margin-bottom: 16px; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; color: #22A663; }
+  </style>
+</head>
+<body>
+
+  <div style="text-align: center; max-width: 800px;">
+    <h1 style="font-size: 32px; margin-bottom: 16px; color: #111;">DarBox Pitch - Style Discovery</h1>
+    <p style="font-size: 18px; color: #555; line-height: 1.5;">Please drag and drop this file into your browser to view the options, then tell me which style (A, B, or C) you prefer.</p>
+  </div>
+
+  <div class="container">
+    
+    <!-- Option A -->
+    <div class="card opt-a">
+      <div class="card-label">Option A</div>
+      <div class="preview-slide">
+        <div class="pill">DarBox Pitch Deck</div>
+        <h1>Peace of mind for<br><span class="accent">modern parents.</span></h1>
+        <p style="opacity: 0.8; font-size: 14px;">Pre-configured, family-safe router business.</p>
+      </div>
+      <div class="preview-bottom">
+        <div class="preview-title">Midnight Executive</div>
+        <div class="preview-mood">Trust, premium, institutional (Playfair + Lato)</div>
+      </div>
+    </div>
+
+    <!-- Option B -->
+    <div class="card opt-b">
+      <div class="card-label">Option B</div>
+      <div class="preview-slide">
+        <div class="pill">DarBox Pitch Deck</div>
+        <h1>Digital Safety,<br><span style="color: #22c55e;">Out of the box.</span></h1>
+        <p style="opacity: 0.7; font-size: 14px;">Family-safe internet, without the setup hassle.</p>
+        <div class="glass-card">
+          <div style="font-size: 24px; margin-bottom: 4px;">🛡️</div>
+          <div style="font-size: 13px; font-weight: 600;">Plug & Play Security</div>
+        </div>
+      </div>
+      <div class="preview-bottom">
+        <div class="preview-title">Glass & Light (DarBox Brand Theme)</div>
+        <div class="preview-mood">SaaS, tech, dark premium (Outfit + Inter)</div>
+      </div>
+    </div>
+
+    <!-- Option C -->
+    <div class="card opt-c">
+      <div class="card-label">Option C</div>
+      <div class="preview-slide">
+        <div class="pill">DarBox Pitch Deck</div>
+        <h1>The internet,<br><span class="accent">filtered locally.</span></h1>
+        <p style="opacity: 0.7; font-size: 15px;">Peace of mind in one simple device.</p>
+        <div style="width: 40px; height: 3px; background: #22A663; margin-top: 24px;"></div>
+      </div>
+      <div class="preview-bottom">
+        <div class="preview-title">Forest & Moss</div>
+        <div class="preview-mood">Trust, grounded, local (Syne + DM Sans)</div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
