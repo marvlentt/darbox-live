@@ -27,7 +27,7 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: rm -f package-lock.json && npm install
+        run: rm -rf package-lock.json node_modules && npm install
 
       - name: Build project
         run: npm run build
