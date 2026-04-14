@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DarBox — Présentation PIE · OFPPT ISMONTIC 2026</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F5F0E8;
+      --bg-dark: #0D1F0F;
+      --bg-card: #1A3A1C;
+      --text: #1B3A2D;
+      --text-inv: #F5F0E8;
+      --accent: #22A663;
+      --accent2: #E0563B;
+      --muted: #6B8C7A;
+      --border: rgba(27, 58, 45, 0.12);
+      --font-head: 'Playfair Display', Georgia, serif;
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html {
+      scroll-snap-type: y mandatory;
+      overflow-y: scroll
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text)
+    }
+
+    .slide {
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      padding: clamp(28px, 5vw, 70px) clamp(24px, 8vw, 110px);
+    }
+
+    .t-hero {
+      font-family: var(--font-head);
+      font-size: clamp(2.6rem, 7vw, 5.8rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.03em
+    }
+
+    .t-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.7rem, 3.8vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em
+    }
+
+    .t-sub {
+      font-family: var(--font-body);
+      font-size: clamp(1rem, 1.8vw, 1.35rem);
+      font-weight: 400;
+      line-height: 1.6
+    }
+
+    .t-body {
+      font-family: var(--font-body);
+      font-size: clamp(0.85rem, 1.4vw, 1.05rem);
+      line-height: 1.7
+    }
+
+    .t-label {
+      font-family: var(--font-display);
+      font-size: clamp(0.65rem, .9vw, .8rem);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-weight: 700
+    }
+
+    .t-stat {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 8vw, 7rem);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .55s cubic-bezier(.16, 1, .3, 1), transform .55s cubic-bezier(.16, 1, .3, 1)
+    }
+
+    .slide.visible .reveal {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    .reveal:nth-child(1) {
+      transition-delay: .04s
+    }
+
+    .reveal:nth-child(2) {
+      transition-delay: .13s
+    }
+
+    .reveal:nth-child(3) {
+      transition-delay: .22s
+    }
+
+    .reveal:nth-child(4) {
+      transition-delay: .31s
+    }
+
+    .reveal:nth-child(5) {
+      transition-delay: .40s
+    }
+
+    .reveal:nth-child(6) {
+      transition-delay: .49s
+    }
+
+    .reveal:nth-child(7) {
+      transition-delay: .58s
+    }
+
+    .reveal:nth-child(8) {
+      transition-delay: .67s
+    }
+
+    .reveal-left {
+      transform: translateX(-40px) !important
+    }
+
+    .reveal-right {
+      transform: translateX(40px) !important
+    }
+
+    .reveal-scale {
+      transform: scale(.93) !important
+    }
+
+    .slide.visible .reveal-left,
+    .slide.visible .reveal-right,
+    .slide.visible .reveal-scale {
+      transform: none !important;
+      opacity: 1
+    }
+
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      height: 3px;
+      width: 0%;
+      background: var(--accent);
+      transition: width .35s ease
+    }
+
+    .nav-dots {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 50
+    }
+
+    .nav-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--text);
+      opacity: .18;
+      cursor: pointer;
+      transition: all .25s ease;
+      border: none;
+      padding: 0
+    }
+
+    .nav-dot.active {
+      opacity: 1;
+      background: var(--accent);
+      transform: scale(1.5)
+    }
+
+    .key-hint {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-body);
+      font-size: 11px;
+      color: var(--text);
+      opacity: .3;
+      transition: opacity .5s;
+      pointer-events: none;
+      white-space: nowrap
+    }
+
+    .slide-num {
+      position: absolute;
+      bottom: 22px;
+      right: 30px;
+      font-family: var(--font-display);
+      font-size: 10px;
+      opacity: .2;
+      letter-spacing: .08em
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(24px, 5vw, 72px);
+      align-items: center
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: clamp(14px, 2.5vw, 36px)
+    }
+
+    .four-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: clamp(10px, 2vw, 24px)
+    }
+
+    .center-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center
+    }
+
+    .card-dark {
+      background: var(--bg-card);
+      border: 1px solid rgba(34, 166, 99, .15);
+      border-radius: 14px;
+      padding: clamp(16px, 2.5vw, 28px)
+    }
+
+    .card-light {
+      background: rgba(27, 58, 45, .05);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: clamp(16px, 2.5vw, 28px)
+    }
+
+    .tag {
+      display: inline-block;
+      background: rgba(34, 166, 99, .15);
+      color: var(--accent);
+      border-radius: 6px;
+      padding: 4px 12px;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase
+    }
+
+    .tag-orange {
+      background: rgba(224, 86, 59, .12);
+      color: var(--accent2)
+    }
+
+    .bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px
+    }
+
+    .bullet-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start
+    }
+
+    .bullet-list li::before {
+      content: "›";
+      color: var(--accent);
+      font-weight: 800;
+      flex-shrink: 0;
+      font-size: 1.1rem;
+      line-height: 1.5
+    }
+
+    .pill {
+      background: rgba(34, 166, 99, .1);
+      border: 1px solid rgba(34, 166, 99, .25);
+      border-radius: 999px;
+      padding: 8px 20px;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--accent)
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      .reveal {
+        transition: opacity .3s ease;
+        transform: none !important
+      }
+    }
+
+    @media(max-width:768px) {
+
+      .nav-dots,
+      .key-hint {
+        display: none
+      }
+
+      .two-col,
+      .three-col,
+      .four-col {
+        grid-template-columns: 1fr;
+        gap: 16px
+      }
+
+      .slide {
+        padding: 24px 20px
+      }
+    }
+
+    /* SLIDE 1 — COVER dark */
+    .s-cover {
+      background: var(--bg-dark);
+      color: var(--text-inv)
+    }
+
+    .s-cover .nav-dot-ref {
+      color: var(--text-inv)
+    }
+
+    .s-cover::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 80% at 110% -10%, rgba(34, 166, 99, .18) 0%, transparent 60%), radial-gradient(ellipse 50% 50% at -10% 110%, rgba(34, 166, 99, .08) 0%, transparent 60%);
+      pointer-events: none
+    }
+
+    .grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(34, 166, 99, .04) 1px, transparent 1px), linear-gradient(90deg, rgba(34, 166, 99, .04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none
+    }
+
+    /* SWOT */
+    .swot-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      height: 70vh;
+      max-height: 520px
+    }
+
+    .swot-cell {
+      border-radius: 12px;
+      padding: clamp(14px, 2vw, 22px);
+      display: flex;
+      flex-direction: column;
+      gap: 8px
+    }
+
+    .swot-s {
+      background: rgba(34, 166, 99, .12);
+      border: 1px solid rgba(34, 166, 99, .3)
+    }
+
+    .swot-w {
+      background: rgba(224, 86, 59, .08);
+      border: 1px solid rgba(224, 86, 59, .25)
+    }
+
+    .swot-o {
+      background: rgba(34, 166, 99, .07);
+      border: 1px solid rgba(34, 166, 99, .2)
+    }
+
+    .swot-t {
+      background: rgba(224, 86, 59, .05);
+      border: 1px solid rgba(224, 86, 59, .18)
+    }
+
+    .swot-label {
+      font-family: var(--font-display);
+      font-size: .7rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      font-weight: 800;
+      margin-bottom: 4px
+    }
+
+    .swot-cell ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px
+    }
+
+    .swot-cell li {
+      font-size: clamp(.75rem, 1.2vw, .9rem);
+      line-height: 1.45;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start
+    }
+
+    .swot-cell li::before {
+      content: "·";
+      font-weight: 900;
+      flex-shrink: 0
+    }
+
+    /* PESTEL */
+    .pestel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px
+    }
+
+    .pestel-item {
+      border-radius: 10px;
+      padding: clamp(12px, 1.5vw, 18px);
+      border: 1px solid var(--border)
+    }
+
+    .pestel-letter {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 4px
+    }
+
+    /* BMC */
+    .bmc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr 1fr;
+      grid-template-rows: auto auto auto;
+      gap: 10px;
+      height: 72vh;
+      max-height: 530px
+    }
+
+    .bmc-cell {
+      border-radius: 10px;
+      padding: clamp(10px, 1.4vw, 16px);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      border: 1px solid var(--border);
+      background: rgba(27, 58, 45, .04)
+    }
+
+    .bmc-cell h4 {
+      font-family: var(--font-display);
+      font-size: clamp(.6rem, .85vw, .75rem);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-weight: 700;
+      opacity: .5;
+      margin-bottom: 3px
+    }
+
+    .bmc-cell p,
+    .bmc-cell li {
+      font-size: clamp(.72rem, 1.1vw, .85rem);
+      line-height: 1.45
+    }
+
+    .bmc-cell ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 3px
+    }
+
+    .bmc-cell li::before {
+      content: "· ";
+      color: var(--accent);
+      font-weight: 900
+    }
+
+    .bmc-vp {
+      background: rgba(34, 166, 99, .08);
+      border-color: rgba(34, 166, 99, .3);
+      grid-row: 1/3
+    }
+
+    .bmc-rev {
+      background: rgba(34, 166, 99, .05);
+      border-color: rgba(34, 166, 99, .2)
+    }
+
+    /* Financial chart */
+    .chart-bar {
+      height: 100%;
+      border-radius: 6px 6px 0 0;
+      transition: height 1.2s cubic-bezier(.16, 1, .3, 1);
+      min-height: 4px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 6px;
+      font-size: .75rem;
+      font-weight: 700
+    }
+
+    /* Conclusion — dark */
+    .s-conclusion {
+      background: var(--bg-dark);
+      color: var(--text-inv)
+    }
+
+    .s-conclusion::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(34, 166, 99, .12) 0%, transparent 70%);
+      pointer-events: none
+    }
+
+    /* Hero two-col layout */
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: 100dvh;
+      gap: clamp(24px, 5vw, 60px);
+      width: 100%
+    }
+
+    .hero-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center
+    }
+
+    .hero-image {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100dvh;
+      overflow: hidden
+    }
+
+    /* Anti-gravity floating animation */
+    @keyframes floatUpDown {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-20px)
+      }
+    }
+
+    .router-float {
+      animation: floatUpDown 6s ease-in-out infinite;
+      filter: drop-shadow(0 25px 35px rgba(0, 0, 0, .25)) drop-shadow(0 10px 15px rgba(0, 0, 0, .15));
+      transition: transform .4s cubic-bezier(.16, 1, .3, 1), filter .4s ease;
+      width: 100%;
+      height: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+
+    .router-float:hover {
+      transform: scale(1.06) rotate(2deg);
+      filter: drop-shadow(0 30px 45px rgba(0, 0, 0, .3)) drop-shadow(0 12px 20px rgba(0, 0, 0, .2));
+    }
+
+    @media(max-width:768px) {
+      .hero-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+        padding-top: 40px;
+        text-align: center
+      }
+
+      .hero-image {
+        order: -1;
+        height: auto;
+        max-height: 50vh
+      }
+
+      .router-float {
+        width: 100%;
+        max-height: 50vh
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="progress-bar"></div>
+  <nav class="nav-dots"></nav>
+  <span class="key-hint">↓ Flèche bas pour avancer · Espace · Swipe</span>
+
+  <!-- ══════════════════════════════════════════════════
+     SLIDE 1 — PAGE DE GARDE
+══════════════════════════════════════════════════ -->
+  <section class="slide s-cover">
+    <div class="grid-bg"></div>
+    <div class="hero-layout">
+      <div class="hero-text">
+        <div class="reveal" style="display: block; max-width: 110px; height: auto; margin-bottom: 2rem; position: relative; z-index: 10;">
+          <img src="Darbox_Logo.svg" alt="DarBox logo"
+            style="width: 100%; height: auto; object-fit: contain; filter: brightness(0) invert(100%) sepia(5%) saturate(100%) hue-rotate(314deg) brightness(105%) contrast(95%);">
+        </div>
+        <div class="t-label reveal" style="color:var(--accent);margin-bottom:14px">PIE · OFPPT ISMONTIC · 2026</div>
+        <h1 class="t-hero reveal" style="color:var(--text-inv);max-width:700px">
+          La sécurité internet<br>
+          <em style="color:var(--accent);font-style:normal">plug & play</em><br>
+          pour les familles.
+        </h1>
+        <p class="t-sub reveal" style="max-width:480px;margin-top:18px;opacity:.65;color:var(--text-inv)">Routeurs
+          préconfigurés · Protection DNS · Zéro compétence requise · Tanger, Maroc</p>
+        <div class="reveal" style="display:flex;gap:12px;margin-top:32px;flex-wrap:wrap">
+          <div class="pill" style="background:rgba(34,166,99,.15)">400–750 DH</div>
+          <div class="pill" style="background:rgba(34,166,99,.15)">Paiement unique</div>
+          <div class="pill" style="background:rgba(34,166,99,.15)">darbox.live</div>
+        </div>
+      </div>
+      <div class="hero-image reveal">
+        <img src="router.svg" alt="DarBox Router" class="router-float">
+      </div>
+    </div>
+    <div class="slide-num" style="color:rgba(245,240,232,.3)">01 / 18</div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+     SLIDE 2 — ÉQUIPE & ENCADREMENT
+══════════════════════════════════════════════════ -->
+  <section class="slide" style="background:var(--bg)">
+    <div class="t-label reveal" style="color:var(--accent);margin-bottom:18px">Équipe & Encadrement</div>
+    <h2 class="t-title reveal">Qui sommes-nous ?</h2>
+    <div class="two-col reveal" style="margin-top:40px">
+      <div>
+        <div class="card-light" style="margin-bottom:20px">
+          <div style="display:flex;gap:18px;align-items:center">
+            <div
+              style="width:56px;height:56px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.4rem;font-weight:800;color:#fff;flex-shrink:0">
+              M</div>
+            <div>
+              <div style="font-family:var(--font-head);font-size:1.2rem;font-weight:700">Merouan El Hattaki</div>
+              <div class="t-label" style="color:var(--muted);margin-top:3px">Fondateur · Porteur de projet</div>
+            </div>
+          </div>
+          <ul class="bullet-list t-body" style="margin-top:16px;opacity:.8">
+            <li>2ème année Infrastructure Digitale — Systèmes & Réseaux</li>
+            <li>Certifié CCNA · AWS Cloud Practitioner</li>
+            <li>Expérience freelance IT · Homelab pfSense</li>
+          </ul>
+        </div>
+        <div class="card-light">
+          <div class="t-label" style="color:var(--muted);margin-bottom:8px">Encadrement académique</div>
+          <div style="font-weight:600">Mme Halima</div>
+          <div class="t-body" style="opacity:.65;margin-top:4px">Formateur encadrant · OFPPT ISMONTIC · Tanger</div>
+          <div style="margin-top:10px;font-size:.82rem;opacity:.5">Dr. Fatine Biaz & Fatima-Zahra Biaz — Méthodologie
+            PIE</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div
+          style="font-family:var(--font-display);font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;opacity:.4;margin-bottom:4px">
+          Compétences clés</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <span class="tag">Réseaux TCP/IP</span>
+          <span class="tag">DNS / Pare-feu</span>
+          <span class="tag">QoS</span>
+          <span class="tag">pfSense</span>
+          <span class="tag">OpenDNS</span>
+          <span class="tag">Configuration routeur</span>
+          <span class="tag">Support client</span>
+          <span class="tag">Vente directe</span>
+        </div>
+        <div class="card-light" style="margin-top:8px">
+          <div class="t-label" style="color:var(--muted);margin-bottom:8px">Module PIE · Phase 6</div>
+          <p class="t-body" style="opacity:.7">Ce projet suit intégralement la méthodologie PIE développée par l'OFPPT :
+            de l'idée à la vente réelle, en passant par le prototype, le BMC et l'étude financière.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">02 / 18</div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+     SLIDE 3 — SOMMAIRE
+══════════════════════════════════════════════════ -->
+  <section class="slide" style="background:var(--bg-dark);color:var(--text-inv)">
+    <div class="grid-bg"></div>
+    <div class="t-label reveal" style="color:var(--accent);margin-bottom:18px">Plan de présentation</div>
+    <h2 class="t-title reveal" style="color:var(--text-inv);margin-bottom:32px">Sommaire</h2>
+    <div class="three-col reveal" style="gap:18px">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div
+          style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)">
+          <span
+            style="font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--accent);opacity:.6;width:22px">01</span>
+          <span style="font-size:.88rem">Description du projet</span>
+        </div>
+        <div
+          style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)">
+          <span
+            style="font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--accent);opacity:.6;width:22px">02</span>
+          <span style="font-size:.88rem">Storytelling</span>
+        </div>
+        <div
+          style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)">
+          <span
+            style="font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--accent);opacity:.6;width:22px">03</span>
+          <span style="font-size:.88rem">Problème & Solution</span>
+        </div>
+        <div
+          style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)">
+          <span
+            style="font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--accent);opacity:.6;width:22px">04</span>
+          <span style="font-size:.88rem">Vision</span>
+        </div>
+        <div
+          style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)">
+          <span
+            style="font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--accent);opacity:.6;width:22px">05</span>
+          <span style="font-size:.88rem">Étude de marché</span>
+        </div>
+        <div
+          style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)">
+          <span
+            style="font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--accent);opacity:.6;width:22px">06</span>
+          <span style="font-size:.88rem">Buyer Persona</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div
+          style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)">
+          <span
+            style="font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--accent);opacity:.6;width:22px">07</span>
+          <span style="font-size:.88rem">Analyse SWOT</span>
+        </div>
+        <div
+          style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)">
+          <span
+            style="font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--accent);opacity:.6;width:22px">08</span>
+          <span style="font-size:.88rem">PESTEL</span>
+        </div>
+        <div
+          style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)">
+          <span
+            style="font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--accent);opacity:.6;width:22px">09</span>
+          <span style="font-size:.88rem">Business Model Canvas</span>
+        </div>
+        <div
+          style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)">
+          <span
+            style="font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--accent);opacity:.6;width:22px">10</span>
+          <span style="font-size:.88rem">Identité visuelle</span>
+        </div>
+        <div
+          style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)">
+          <span
+            style="font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--accent);opacity:.6;width:22px">11</span>
+          <span style="font-size:.88rem">Chartes d'engagement</span>
+        </div>
+        <div
+          style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)">
+          <span
+            style="font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--accent);opacity:.6;width:22px">12</span>
+          <span style="font-size:.88rem">Présence digitale</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div
+          style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:rgba(34,166,99,.1);border:1px solid rgba(34,166,99,.3)">
+          <span
+            style="font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--accent);width:22px">13</span>
+          <span style="font-size:.88rem;font-weight:600;color:var(--accent)">Étude financière</span>
+        </div>
+        <div
+          style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:rgba(34,166,99,.08);border:1px solid rgba(34,166,99,.2)">
+          <span
+            style="font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--accent);width:22px">14</span>
+          <span style="font-size:.88rem;font-weight:600;color:var(--accent)">Conclusion</span>
+        </div>
+        <div
+          style="margin-top:12px;padding:14px;border-radius:10px;background:rgba(34,166,99,.06);border:1px solid rgba(34,166,99,.15)">
+          <div
+            style="font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:6px;font-weight:700">
+            Format</div>
+          <p style="font-size:.82rem;opacity:.6;line-height:1.55">18 slides · ~8 min · Jury PIE OFPPT ISMONTIC</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num" style="color:rgba(245,240,232,.3)">03 / 18</div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+     SLIDE 4 — DESCRIPTION DU PROJET
+══════════════════════════════════════════════════ -->
+  <section class="slide" style="background:var(--bg)">
+    <div class="t-label reveal" style="color:var(--accent);margin-bottom:16px">Description du projet</div>
+    <h2 class="t-title reveal">DarBox, c'est quoi ?</h2>
+    <div class="two-col reveal" style="margin-top:32px;align-items:start">
+      <div>
+        <p class="t-sub" style="opacity:.8;margin-bottom:24px">Un <strong>routeur physique préconfiguré</strong> qui se
+          branche derrière la box du FAI (Maroc Telecom, Orange, Inwi) et crée un réseau Wi-Fi enfants sécurisé
+          automatiquement.</p>
+        <ul class="bullet-list t-body" style="opacity:.8;gap:12px">
+          <li><strong>Filtrage DNS</strong> — OpenDNS FamilyShield bloque adultes & malwares au niveau réseau</li>
+          <li><strong>Double réseau</strong> — Wi-Fi parent (sans restriction) + Wi-Fi enfants protégé</li>
+          <li><strong>Couvre-feu horaire</strong> — le réseau enfants s'éteint automatiquement le soir</li>
+          <li><strong>Pare-feu matériel</strong> — protection indépendante de l'appareil, impossible à contourner</li>
+          <li><strong>Zéro abonnement</strong> — paiement unique, garantie 30 jours</li>
+        </ul>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="card-light" style="border-left:3px solid var(--accent)">
+          <div class="t-label" style="color:var(--accent);margin-bottom:8px">Modèle économique</div>
+          <p class="t-body" style="opacity:.75">Achat de routeurs standards → configuration réseau professionnelle →
+            vente à forte valeur ajoutée. <strong>Aucun développement logiciel.</strong></p>
+        </div>
+        <div class="four-col" style="grid-template-columns:1fr 1fr">
+          <div
+            style="text-align:center;padding:16px;border-radius:10px;background:rgba(34,166,99,.08);border:1px solid rgba(34,166,99,.2)">
+            <div class="t-stat" style="font-size:2.2rem;color:var(--accent)">4</div>
+            <div style="font-size:.75rem;opacity:.6;margin-top:4px;font-weight:600">Offres</div>
+          </div>
+          <div
+            style="text-align:center;padding:16px;border-radius:10px;background:rgba(34,166,99,.08);border:1px solid rgba(34,166,99,.2)">
+            <div class="t-stat" style="font-size:2.2rem;color:var(--accent)">0</div>
+            <div style="font-size:.75rem;opacity:.6;margin-top:4px;font-weight:600">Dev logiciel</div>
+          </div>
+          <div
+            style="text-align:center;padding:16px;border-radius:10px;background:rgba(34,166,99,.08);border:1px solid rgba(34,166,99,.2)">
+            <div class="t-stat" style="font-size:2.2rem;color:var(--accent)">5<span style="font-size:1rem">min</span>
+            </div>
+            <div style="font-size:.75rem;opacity:.6;margin-top:4px;font-weight:600">Installation</div>
+          </div>
+          <div
+            style="text-align:center;padding:16px;border-radius:10px;background:rgba(34,166,99,.08);border:1px solid rgba(34,166,99,.2)">
+            <div class="t-stat" style="font-size:2.2rem;color:var(--accent)">24<span style="font-size:1rem">h</span>
+            </div>
+            <div style="font-size:.75rem;opacity:.6;margin-top:4px;font-weight:600">Protection</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">04 / 18</div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+     SLIDE 5 — STORYTELLING
+══════════════════════════════════════════════════ -->
+  <section class="slide" style="background:var(--bg-dark);color:var(--text-inv)">
+    <div class="grid-bg"></div>
+    <div class="center-col" style="max-width:760px;margin:0 auto">
+      <div class="t-label reveal" style="color:var(--accent);margin-bottom:20px">L'histoire de DarBox</div>
+      <blockquote class="t-title reveal"
+        style="font-style:italic;text-align:center;color:var(--text-inv);line-height:1.3">
+        « Une mère de Tanger m'appelle à 23h. Sa fille de 12 ans regardait du contenu inapproprié. Elle ne savait pas
+        comment bloquer. »
+      </blockquote>
+      <p class="t-sub reveal" style="margin-top:28px;text-align:center;opacity:.6;max-width:600px">
+        Ce n'était pas une panne technique. C'était un <strong style="color:var(--accent)">vide de marché</strong> : des
+        parents qui manquent d'outils accessibles, pas de compétences IT, et des solutions existantes trop complexes ou
+        trop chères.
+      </p>
+      <div class="reveal" style="margin-top:36px;display:flex;gap:28px;justify-content:center;flex-wrap:wrap">
+        <div style="text-align:center">
+          <div style="font-family:var(--font-display);font-size:2.4rem;font-weight:800;color:var(--accent)"
+            data-count="89" data-suffix="%">0%</div>
+          <div style="font-size:.78rem;opacity:.45;margin-top:4px;text-transform:uppercase;letter-spacing:.08em">Ménages
+            connectés au Maroc</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-family:var(--font-display);font-size:2.4rem;font-weight:800;color:var(--accent)"
+            data-count="5" data-suffix="%">0%</div>
+          <div style="font-size:.78rem;opacity:.45;margin-top:4px;text-transform:uppercase;letter-spacing:.08em">Avec
+            contrôle parental actif</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-family:var(--font-display);font-size:2.4rem;font-weight:800;color:var(--accent)"
+            data-count="50000" data-suffix="+">0</div>
+          <div style="font-size:.78rem;opacity:.45;margin-top:4px;text-transform:uppercase;letter-spacing:.08em">
+            Familles cibles à Tanger</div>
+        </div>
+      </div>
+      <p class="t-body reveal" style="margin-top:28px;opacity:.4;font-style:italic">DarBox est né de cette nuit-là. Ma
+        compétence réseau. Leur besoin réel.</p>
+    </div>
+    <div class="slide-num" style="color:rgba(245,240,232,.3)">05 / 18</div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+     SLIDE 6 — PROBLÈME & SOLUTION
+══════════════════════════════════════════════════ -->
+  <section class="slide" style="background:var(--bg)">
+    <div class="t-label reveal" style="color:var(--accent);margin-bottom:16px">Problème & Solution</div>
+    <div class="two-col reveal" style="align-items:start;gap:clamp(20px,4vw,60px)">
+      <div>
+        <h3
+          style="font-family:var(--font-head);font-size:clamp(1.2rem,2.5vw,1.8rem);font-weight:700;color:var(--accent2);margin-bottom:20px">
+          Le problème</h3>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div
+            style="display:flex;gap:14px;align-items:flex-start;padding:14px;border-radius:10px;background:rgba(224,86,59,.06);border:1px solid rgba(224,86,59,.18)">
+            <span style="font-size:1.4rem;flex-shrink:0">😰</span>
+            <div>
+              <div style="font-weight:600;font-size:.9rem;margin-bottom:3px">Contenus dangereux</div>
+              <div class="t-body" style="opacity:.65;font-size:.82rem">Sites adultes, jeux d'argent, malwares
+                accessibles via n'importe quel Wi-Fi familial.</div>
+            </div>
+          </div>
+          <div
+            style="display:flex;gap:14px;align-items:flex-start;padding:14px;border-radius:10px;background:rgba(224,86,59,.06);border:1px solid rgba(224,86,59,.18)">
+            <span style="font-size:1.4rem;flex-shrink:0">📱</span>
+            <div>
+              <div style="font-weight:600;font-size:.9rem;margin-bottom:3px">Applications contournables</div>
+              <div class="t-body" style="opacity:.65;font-size:.82rem">Les apps de contrôle parental se désinstallent en
+                30 secondes — les enfants savent comment.</div>
+            </div>
+          </div>
+          <div
+            style="display:flex;gap:14px;align-items:flex-start;padding:14px;border-radius:10px;background:rgba(224,86,59,.06);border:1px solid rgba(224,86,59,.18)">
+            <span style="font-size:1.4rem;flex-shrink:0">🌙</span>
+            <div>
+              <div style="font-weight:600;font-size:.9rem;margin-bottom:3px">Nuits sans règles</div>
+              <div class="t-body" style="opacity:.65;font-size:.82rem">Aucune solution n'éteint automatiquement l'accès
+                internet à heure fixe sans conflit familial.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3
+          style="font-family:var(--font-head);font-size:clamp(1.2rem,2.5vw,1.8rem);font-weight:700;color:var(--accent);margin-bottom:20px">
+          La solution DarBox</h3>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div
+            style="display:flex;gap:14px;align-items:flex-start;padding:14px;border-radius:10px;background:rgba(34,166,99,.07);border:1px solid rgba(34,166,99,.2)">
+            <span style="font-size:1.4rem;flex-shrink:0">🔌</span>
+            <div>
+              <div style="font-weight:600;font-size:.9rem;margin-bottom:3px">Protection au niveau réseau</div>
+              <div class="t-body" style="opacity:.65;font-size:.82rem">OpenDNS bloque à la source — avant même que la
+                requête atteigne l'appareil. Incontournable.</div>
+            </div>
+          </div>
+          <div
+            style="display:flex;gap:14px;align-items:flex-start;padding:14px;border-radius:10px;background:rgba(34,166,99,.07);border:1px solid rgba(34,166,99,.2)">
+            <span style="font-size:1.4rem;flex-shrink:0">⏰</span>
+            <div>
+              <div style="font-weight:600;font-size:.9rem;margin-bottom:3px">Couvre-feu automatique</div>
+              <div class="t-body" style="opacity:.65;font-size:.82rem">Le Wi-Fi enfants s'éteint à 22h00 et pendant les
+                heures de devoirs. Sans confiscation.</div>
+            </div>
+          </div>
+          <div
+            style="display:flex;gap:14px;align-items:flex-start;padding:14px;border-radius:10px;background:rgba(34,166,99,.07);border:1px solid rgba(34,166,99,.2)">
+            <span style="font-size:1.4rem;flex-shrink:0">🛡️</span>
+            <div>
+              <div style="font-weight:600;font-size:.9rem;margin-bottom:3px">Plug & Play total</div>
+              <div class="t-body" style="opacity:.65;font-size:.82rem">Branchez derrière votre box. Connectez la
+                tablette de l'enfant. Terminé. Aucun technicien requis.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">06 / 18</div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+     SLIDE 7 — VISION
+══════════════════════════════════════════════════ -->
+  <section class="slide" style="background:var(--bg)">
+    <div class="two-col reveal">
+      <div>
+        <div class="t-label" style="color:var(--accent);margin-bottom:16px">Vision & Mission</div>
+        <h2 class="t-title" style="margin-bottom:24px">Chaque foyer marocain mérite<br><em
+            style="color:var(--accent);font-style:normal">un internet sûr.</em></h2>
+        <p class="t-sub" style="opacity:.7;margin-bottom:28px">DarBox vise à devenir la référence du contrôle parental
+          physique au Maroc, en commençant par Tanger, puis en s'étendant à d'autres villes.</p>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;gap:12px;align-items:center">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0"></div>
+            <span class="t-body" style="opacity:.75"><strong>Court terme</strong> — Valider le modèle à Tanger,
+              atteindre 20 ventes/mois</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--accent);opacity:.6;flex-shrink:0"></div>
+            <span class="t-body" style="opacity:.75"><strong>Moyen terme</strong> — Étendre à Tétouan, Casablanca,
+              Rabat</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--accent);opacity:.35;flex-shrink:0">
+            </div>
+            <span class="t-body" style="opacity:.75"><strong>Long terme</strong> — Partenariat FAI ou distributeur
+              national</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="card-light" style="border-left:3px solid var(--accent)">
+          <div class="t-label" style="color:var(--muted);margin-bottom:8px">Notre promesse client</div>
+          <p class="t-body" style="font-style:italic;opacity:.8">"Branchez-le, connectez la tablette de votre enfant, et
+            c'est protégé. <strong>Aucune configuration requise de votre part.</strong>"</p>
+        </div>
+        <div class="card-light" style="border-left:3px solid var(--accent2)">
+          <div class="t-label" style="color:var(--muted);margin-bottom:8px">Charte d'engagement</div>
+          <p class="t-body" style="opacity:.75">Intégrité technique totale. Zéro collecte de données de navigation.
+            Transparence sur les prix. Garantie d'échange 30 jours.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">07 / 18</div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+     SLIDE 8 — ÉTUDE DE MARCHÉ
+══════════════════════════════════════════════════ -->
+  <section class="slide" style="background:var(--bg-dark);color:var(--text-inv)">
+    <div class="grid-bg"></div>
+    <div class="t-label reveal" style="color:var(--accent);margin-bottom:16px">Étude de marché</div>
+    <h2 class="t-title reveal" style="color:var(--text-inv);margin-bottom:28px">Le marché marocain du contrôle parental
+    </h2>
+    <div class="three-col reveal" style="gap:16px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div
+          style="padding:18px;border-radius:12px;background:rgba(34,166,99,.1);border:1px solid rgba(34,166,99,.25);text-align:center">
+          <div style="font-family:var(--font-display);font-size:2.6rem;font-weight:800;color:var(--accent)"
+            data-count="89" data-suffix="%">0%</div>
+          <div style="font-size:.75rem;opacity:.5;margin-top:6px;text-transform:uppercase;letter-spacing:.08em">Ménages
+            connectés (HCP)</div>
+        </div>
+        <div
+          style="padding:18px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);text-align:center">
+          <div style="font-family:var(--font-display);font-size:2.6rem;font-weight:800;color:var(--accent)"
+            data-count="50000" data-suffix="+">0</div>
+          <div style="font-size:.75rem;opacity:.5;margin-top:6px;text-transform:uppercase;letter-spacing:.08em">Familles
+            cibles Tanger</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div
+          style="padding:14px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)">
+          <div
+            style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:8px;font-weight:700">
+            Concurrence directe</div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:6px">
+            <li style="font-size:.82rem;opacity:.7">• Apps contrôle parental — désinstallables facilement</li>
+            <li style="font-size:.82rem;opacity:.7">• Paramètres FAI — trop limités, non personnalisables</li>
+            <li style="font-size:.82rem;opacity:.7">• Routeurs premium importés — 1 000–3 000 DH, pas localisés</li>
+          </ul>
+        </div>
+        <div
+          style="padding:14px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)">
+          <div
+            style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:8px;font-weight:700">
+            Avantage DarBox</div>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:6px">
+            <li style="font-size:.82rem;opacity:.7">✓ Prix 400–750 DH = accessible classe moyenne</li>
+            <li style="font-size:.82rem;opacity:.7">✓ SAV local WhatsApp en darija</li>
+            <li style="font-size:.82rem;opacity:.7">✓ Aucun abonnement mensuel</li>
+          </ul>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div
+          style="padding:18px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)">
+          <div
+            style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:10px;font-weight:700">
+            Segmentation TAM/SAM/SOM</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div>
+              <div style="font-size:.75rem;opacity:.4;margin-bottom:3px">TAM — Maroc</div>
+              <div style="height:6px;border-radius:3px;background:rgba(34,166,99,.15)">
+                <div style="width:0%" data-width="100%"
+                  style="height:6px;border-radius:3px;background:rgba(34,166,99,.4)" class="bar-fill" data-width="100%">
+                </div>
+              </div>
+              <div style="font-size:.78rem;margin-top:3px;opacity:.6">~800K familles connectées avec enfants</div>
+            </div>
+            <div>
+              <div style="font-size:.75rem;opacity:.4;margin-bottom:3px">SAM — Tanger-Tétouan</div>
+              <div style="height:6px;border-radius:3px;background:rgba(34,166,99,.1)">
+                <div class="bar-fill" data-width="35%"
+                  style="width:0%;height:6px;border-radius:3px;background:rgba(34,166,99,.5);transition:width 1.2s ease">
+                </div>
+              </div>
+              <div style="font-size:.78rem;margin-top:3px;opacity:.6">~90K familles</div>
+            </div>
+            <div>
+              <div style="font-size:.75rem;opacity:.4;margin-bottom:3px">SOM — Tanger ville (an 1)</div>
+              <div style="height:6px;border-radius:3px;background:rgba(34,166,99,.1)">
+                <div class="bar-fill" data-width="8%"
+                  style="width:0%;height:6px;border-radius:3px;background:var(--accent);transition:width 1.2s ease">
+                </div>
+              </div>
+              <div style="font-size:.78rem;margin-top:3px;opacity:.6">~200 ventes réalistes</div>
+            </div>
+          </div>
+        </div>
+        <div style="padding:14px;border-radius:10px;background:rgba(34,166,99,.08);border:1px solid rgba(34,166,99,.2)">
+          <div style="font-size:.75rem;opacity:.5;margin-bottom:5px">Prix psychologique validé</div>
+          <p style="font-size:.83rem;opacity:.75">400 DH = ~1 charge téléphonique/mois. Acceptable pour la classe
+            moyenne tangeroise.</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num" style="color:rgba(245,240,232,.3)">08 / 18</div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+     SLIDE 9 — BUYER PERSONA
+══════════════════════════════════════════════════ -->
+  <section class="slide" style="background:var(--bg)">
+    <div class="t-label reveal" style="color:var(--accent);margin-bottom:16px">Buyer Persona</div>
+    <div class="two-col reveal" style="align-items:start;gap:clamp(24px,5vw,64px)">
+      <div>
+        <div style="display:flex;gap:18px;align-items:center;margin-bottom:22px">
+          <div
+            style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#1A7A4A);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:2rem;font-weight:800;color:#fff;flex-shrink:0">
+            K</div>
+          <div>
+            <div style="font-family:var(--font-head);font-size:1.5rem;font-weight:700">Khadija Bensaid</div>
+            <div class="t-label" style="color:var(--muted);margin-top:3px">38 ans · Secrétaire administrative · Mère de
+              3 enfants</div>
+            <div class="t-label" style="color:var(--muted);opacity:.5;margin-top:2px">Revenu ~5 500 DH/mois · Souani,
+              Tanger</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div
+            style="padding:12px 16px;border-radius:10px;background:rgba(34,166,99,.06);border:1px solid rgba(34,166,99,.15)">
+            <div
+              style="font-family:var(--font-display);font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);font-weight:700;margin-bottom:5px">
+              💬 Says</div>
+            <p style="font-size:.85rem;font-style:italic;opacity:.8">«Je veux protéger mes enfants mais je ne suis pas
+              informaticienne.»</p>
+          </div>
+          <div
+            style="padding:12px 16px;border-radius:10px;background:rgba(27,58,45,.05);border:1px solid var(--border)">
+            <div
+              style="font-family:var(--font-display);font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700;margin-bottom:5px">
+              💭 Thinks</div>
+            <p style="font-size:.85rem;opacity:.7">«Les applications se désinstallent et coûtent trop cher en
+              abonnements.»</p>
+          </div>
+          <div
+            style="padding:12px 16px;border-radius:10px;background:rgba(27,58,45,.05);border:1px solid var(--border)">
+            <div
+              style="font-family:var(--font-display);font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700;margin-bottom:5px">
+              👆 Does</div>
+            <p style="font-size:.85rem;opacity:.7">Cherche dans les groupes Facebook de parents · Demande aux voisins ·
+              Évite les achats tech complexes</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div
+          style="padding:12px 16px;border-radius:10px;background:rgba(224,86,59,.06);border:1px solid rgba(224,86,59,.2);margin-bottom:10px">
+          <div
+            style="font-family:var(--font-display);font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--accent2);font-weight:700;margin-bottom:5px">
+            ❤️ Feels</div>
+          <p style="font-size:.85rem;opacity:.8">Anxieuse le soir · Impuissante · Culpabilité de ne pas contrôler</p>
+        </div>
+        <div
+          style="padding:14px 16px;border-radius:10px;background:rgba(34,166,99,.1);border:2px solid rgba(34,166,99,.3);margin-bottom:16px">
+          <div
+            style="font-family:var(--font-display);font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);font-weight:700;margin-bottom:6px">
+            🎯 Déclencheur d'achat</div>
+          <p style="font-size:.88rem;font-weight:500;line-height:1.5">Une amie lui montre DarBox chez elle. Elle voit le
+            réseau <em>«Maison_Enfants»</em> sur son téléphone et commande le lendemain via WhatsApp.</p>
+        </div>
+        <div class="card-light">
+          <div class="t-label" style="color:var(--muted);margin-bottom:8px">Canal de conversion</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <span class="tag">Facebook groupes parents</span>
+            <span class="tag">WhatsApp bouche-à-oreille</span>
+            <span class="tag">Instagram démo vidéo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">09 / 18</div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+     SLIDE 10 — SWOT
+══════════════════════════════════════════════════ -->
+  <section class="slide"
+    style="background:var(--bg);padding-top:clamp(20px,4vw,50px);padding-bottom:clamp(20px,4vw,50px)">
+    <div class="t-label reveal" style="color:var(--accent);margin-bottom:12px">Analyse stratégique</div>
+    <h2 class="t-title reveal" style="margin-bottom:18px">SWOT</h2>
+    <div class="swot-grid reveal">
+      <div class="swot-cell swot-s">
+        <div class="swot-label" style="color:var(--accent)">🟢 Forces</div>
+        <ul>
+          <li style="color:var(--text)"><span style="color:var(--accent)">·</span> CCNA certifié — crédibilité technique
+            réelle</li>
+          <li><span style="color:var(--accent)">·</span> Zéro développement logiciel = coût minimal</li>
+          <li><span style="color:var(--accent)">·</span> Plug & play — différenciateur fort</li>
+          <li><span style="color:var(--accent)">·</span> Marge brute 43–87% selon l'offre</li>
+          <li><span style="color:var(--accent)">·</span> SAV local en darija / WhatsApp</li>
+        </ul>
+      </div>
+      <div class="swot-cell swot-w">
+        <div class="swot-label" style="color:var(--accent2)">🔴 Faiblesses</div>
+        <ul>
+          <li><span style="color:var(--accent2)">·</span> Notoriété = 0 au démarrage</li>
+          <li><span style="color:var(--accent2)">·</span> Stock limité par le capital disponible</li>
+          <li><span style="color:var(--accent2)">·</span> Dépendance logistique (grossistes)</li>
+          <li><span style="color:var(--accent2)">·</span> Capacité de configuration = 1 personne</li>
+          <li><span style="color:var(--accent2)">·</span> Pas de local physique</li>
+        </ul>
+      </div>
+      <div class="swot-cell swot-o">
+        <div class="swot-label" style="color:var(--accent)">💡 Opportunités</div>
+        <ul>
+          <li><span style="color:var(--accent)">·</span> Marché non adressé localement</li>
+          <li><span style="color:var(--accent)">·</span> 89% ménages marocains connectés</li>
+          <li><span style="color:var(--accent)">·</span> Anxiété parentale croissante (TikTok, etc.)</li>
+          <li><span style="color:var(--accent)">·</span> Routeurs abordables disponibles</li>
+          <li><span style="color:var(--accent)">·</span> Maroc Digital 2030 — sensibilisation</li>
+        </ul>
+      </div>
+      <div class="swot-cell swot-t">
+        <div class="swot-label" style="color:var(--accent2)">⚠️ Menaces</div>
+        <ul>
+          <li><span style="color:var(--accent2)">·</span> Modèle facilement copiable</li>
+          <li><span style="color:var(--accent2)">·</span> FAI pourrait intégrer filtrage natif</li>
+          <li><span style="color:var(--accent2)">·</span> Apps gratuites en amélioration continue</li>
+          <li><span style="color:var(--accent2)">·</span> Dépendance à OpenDNS (tiers gratuit)</li>
+          <li><span style="color:var(--accent2)">·</span> Pouvoir d'achat variable selon quartier</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-num">10 / 18</div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+     SLIDE 11 — PESTEL
+══════════════════════════════════════════════════ -->
+  <section class="slide"
+    style="background:var(--bg);padding-top:clamp(20px,4vw,50px);padding-bottom:clamp(20px,4vw,50px)">
+    <div class="t-label reveal" style="color:var(--accent);margin-bottom:12px">Analyse macro-environnementale</div>
+    <h2 class="t-title reveal" style="margin-bottom:18px">PESTEL</h2>
+    <div class="pestel-grid reveal">
+      <div class="pestel-item" style="background:rgba(34,166,99,.06);border-color:rgba(34,166,99,.2)">
+        <div class="pestel-letter" style="color:var(--accent)">P</div>
+        <div style="font-weight:700;font-size:.82rem;margin-bottom:5px">Politique</div>
+        <p style="font-size:.78rem;opacity:.7;line-height:1.5">Stratégie Maroc Digital 2030 · Politique de protection
+          des mineurs en ligne · Soutien OFPPT aux jeunes entrepreneurs</p>
+      </div>
+      <div class="pestel-item" style="background:rgba(27,58,45,.04);border-color:var(--border)">
+        <div class="pestel-letter" style="color:var(--text)">E</div>
+        <div style="font-weight:700;font-size:.82rem;margin-bottom:5px">Économique</div>
+        <p style="font-size:.78rem;opacity:.7;line-height:1.5">Classe moyenne tangeroise en croissance · Prix 400–750 DH
+          accessible · Zone franche Tanger Med dynamique</p>
+      </div>
+      <div class="pestel-item" style="background:rgba(27,58,45,.04);border-color:var(--border)">
+        <div class="pestel-letter" style="color:var(--text)">S</div>
+        <div style="font-weight:700;font-size:.82rem;margin-bottom:5px">Socioculturel</div>
+        <p style="font-size:.78rem;opacity:.7;line-height:1.5">89% ménages connectés · Anxiété parentale face aux écrans
+          · TikTok & Roblox omniprésents chez les 8–16 ans</p>
+      </div>
+      <div class="pestel-item" style="background:rgba(34,166,99,.06);border-color:rgba(34,166,99,.2)">
+        <div class="pestel-letter" style="color:var(--accent)">T</div>
+        <div style="font-weight:700;font-size:.82rem;margin-bottom:5px">Technologique</div>
+        <p style="font-size:.78rem;opacity:.7;line-height:1.5">Routeurs TP-Link/Xiaomi abordables · OpenDNS FamilyShield
+          gratuit · Configuration QoS mature et stable</p>
+      </div>
+      <div class="pestel-item" style="background:rgba(27,58,45,.04);border-color:var(--border)">
+        <div class="pestel-letter" style="color:var(--text)">E</div>
+        <div style="font-weight:700;font-size:.82rem;margin-bottom:5px">Écologique</div>
+        <p style="font-size:.78rem;opacity:.7;line-height:1.5">Favoriser routeurs reconditionnés · Réduire les déchets
+          électroniques (e-waste) · Engagement service long durée</p>
+      </div>
+      <div class="pestel-item" style="background:rgba(27,58,45,.04);border-color:var(--border)">
+        <div class="pestel-letter" style="color:var(--text)">L</div>
+        <div style="font-weight:700;font-size:.82rem;margin-bottom:5px">Légal</div>
+        <p style="font-size:.78rem;opacity:.7;line-height:1.5">Loi marocaine protection des mineurs · CNDP — zéro
+          collecte de données de navigation · Garantie légale SAV</p>
+      </div>
+    </div>
+    <div class="slide-num">11 / 18</div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+     SLIDE 12 — BMC
+══════════════════════════════════════════════════ -->
+  <section class="slide"
+    style="background:var(--bg);padding-top:clamp(16px,3.5vw,44px);padding-bottom:clamp(16px,3.5vw,44px)">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:12px">
+      <div class="t-label reveal" style="color:var(--accent)">Business Model Canvas</div>
+    </div>
+    <div class="bmc-grid reveal" style="font-size:clamp(.72rem,1.1vw,.85rem)">
+      <div class="bmc-cell" style="grid-row:1/3">
+        <h4>Partenaires clés</h4>
+        <ul>
+          <li>Grossistes matériel info (Casabarata)</li>
+          <li>Services livraison locaux Tanger</li>
+          <li>Communautés parents FB/WA</li>
+        </ul>
+      </div>
+      <div class="bmc-cell">
+        <h4>Activités clés</h4>
+        <ul>
+          <li>Sourcing & config réseau</li>
+          <li>DNS / QoS / pare-feu</li>
+          <li>SAV & support WhatsApp</li>
+          <li>Livraison à domicile</li>
+        </ul>
+      </div>
+      <div class="bmc-vp bmc-cell" style="grid-row:1/3">
+        <h4>Proposition de valeur</h4>
+        <div
+          style="font-size:clamp(.82rem,1.2vw,.95rem);font-weight:700;color:var(--accent);line-height:1.4;margin-bottom:10px">
+          Sécurité internet plug & play pour familles non-techniques</div>
+        <ul>
+          <li>Branchez — connectez — protégé</li>
+          <li>Zéro abonnement mensuel</li>
+          <li>Couvre-feu automatique</li>
+          <li>Anti-distraction (TikTok, Instagram)</li>
+          <li>Garantie 30 jours</li>
+        </ul>
+      </div>
+      <div class="bmc-cell">
+        <h4>Relation client</h4>
+        <ul>
+          <li>Guide installation simplifié</li>
+          <li>Support WhatsApp (darija)</li>
+          <li>Garantie échange matériel</li>
+        </ul>
+      </div>
+      <div class="bmc-cell" style="grid-column:1/2;grid-row:3">
+        <h4>Ressources clés</h4>
+        <ul>
+          <li>Expertise CCNA</li>
+          <li>Stock routeurs</li>
+          <li>darbox.live</li>
+        </ul>
+      </div>
+      <div class="bmc-cell" style="grid-column:2/3;grid-row:3">
+        <h4>Canaux</h4>
+        <ul>
+          <li>Facebook groupes parents</li>
+          <li>WhatsApp bouche-à-oreille</li>
+          <li>Instagram / TikTok démo</li>
+          <li>darbox.live</li>
+        </ul>
+      </div>
+      <div class="bmc-cell" style="grid-column:3/4;grid-row:3">
+        <h4>Segments clients</h4>
+        <ul>
+          <li>Familles Tanger (B2C)</li>
+          <li>Enfants 6–17 ans</li>
+          <li>Classe moyenne</li>
+        </ul>
+      </div>
+      <div class="bmc-cell" style="grid-column:1/3;background:rgba(224,86,59,.05);border-color:rgba(224,86,59,.2)">
+        <h4>Structure des coûts</h4>
+        <div style="display:flex;gap:24px;flex-wrap:wrap">
+          <div><strong>Variables :</strong> Achat routeurs (200–400 DH) · Livraison · Emballage</div>
+          <div><strong>Fixes :</strong> Internet · Téléphone · Transport — 250 DH/mois</div>
+        </div>
+      </div>
+      <div class="bmc-rev bmc-cell" style="grid-column:3/4">
+        <h4>Sources de revenus</h4>
+        <ul>
+          <li>Vente routeurs 400–750 DH</li>
+          <li>Config service 150–200 DH</li>
+          <li>Reconfiguration 80 DH</li>
+        </ul>
+      </div>
+    </div>
+    <div class="slide-num">12 / 18</div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+     SLIDE 13 — IDENTITÉ VISUELLE
+══════════════════════════════════════════════════ -->
+  <section class="slide" style="background:var(--bg-dark);color:var(--text-inv)">
+    <div class="grid-bg"></div>
+    <div class="t-label reveal" style="color:var(--accent);margin-bottom:16px">Identité visuelle & Brand</div>
+    <div class="two-col reveal" style="align-items:start">
+      <div>
+        <h2 class="t-title" style="color:var(--text-inv);margin-bottom:24px">Une marque<br><em
+            style="color:var(--accent);font-style:normal">de confiance.</em></h2>
+        <div
+          style="padding:28px;border-radius:14px;background:rgba(245,240,232,.05);border:1px solid rgba(255,255,255,.08);margin-bottom:18px;display:flex;align-items:center;justify-content:center;min-height:100px">
+          <img src="Darbox_Logo.svg" alt="DarBox"
+            style="max-height:140px;max-width:350px;object-fit:contain;filter: brightness(0) invert(100%) sepia(5%) saturate(100%) hue-rotate(314deg) brightness(105%) contrast(95%);">
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;border-radius:6px;background:#1A7A4A;flex-shrink:0"></div>
+            <div style="font-size:.75rem;opacity:.6">#1A7A4A<br>Confiance</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;border-radius:6px;background:#E0563B;flex-shrink:0"></div>
+            <div style="font-size:.75rem;opacity:.6">#E0563B<br>Urgence</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div
+              style="width:28px;height:28px;border-radius:6px;background:#F5F0E8;border:1px solid rgba(255,255,255,.2);flex-shrink:0">
+            </div>
+            <div style="font-size:.75rem;opacity:.6">#F5F0E8<br>Famille</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:28px;height:28px;border-radius:6px;background:#0D1117;flex-shrink:0"></div>
+            <div style="font-size:.75rem;opacity:.6">#0D1117<br>Tech</div>
+          </div>
+        </div>
+        <div style="font-size:.75rem;opacity:.4">Typographie : Outfit 800/900 wordmark · Système Apple/DM Sans body
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div
+          style="padding:16px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)">
+          <div
+            style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:700;margin-bottom:10px">
+            Actifs digitaux</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:.85rem;opacity:.7">🌐 Site web</span>
+              <span style="font-size:.82rem;color:var(--accent);font-weight:600">darbox.live</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:.85rem;opacity:.7">📄 Catalogue PDF</span>
+              <span style="font-size:.82rem;color:var(--accent);font-weight:600">darbox.live/catalogue</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:.85rem;opacity:.7">📧 Newsletter</span>
+              <span style="font-size:.82rem;color:var(--accent);font-weight:600">darbox.live/newsletter</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:.85rem;opacity:.7">💬 WhatsApp SAV</span>
+              <span style="font-size:.82rem;color:var(--accent);font-weight:600">+212 621 429 030</span>
+            </div>
+          </div>
+        </div>
+        <div
+          style="padding:16px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)">
+          <div
+            style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:700;margin-bottom:10px">
+            QR Code — Catalogue live</div>
+          <div
+            style="text-align:center;padding:12px;background:white;border-radius:8px;display:inline-flex;flex-direction:column;align-items:center;gap:4px">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="80" height="80">
+              <rect width="100" height="100" fill="white" />
+              <rect x="10" y="10" width="30" height="30" fill="none" stroke="#1A7A4A" stroke-width="4" />
+              <rect x="16" y="16" width="18" height="18" fill="#1A7A4A" />
+              <rect x="60" y="10" width="30" height="30" fill="none" stroke="#1A7A4A" stroke-width="4" />
+              <rect x="66" y="16" width="18" height="18" fill="#1A7A4A" />
+              <rect x="10" y="60" width="30" height="30" fill="none" stroke="#1A7A4A" stroke-width="4" />
+              <rect x="16" y="66" width="18" height="18" fill="#1A7A4A" />
+              <rect x="46" y="10" width="8" height="8" fill="#1A7A4A" />
+              <rect x="46" y="22" width="8" height="8" fill="#1A7A4A" />
+              <rect x="60" y="46" width="8" height="8" fill="#1A7A4A" />
+              <rect x="72" y="46" width="8" height="8" fill="#1A7A4A" />
+              <rect x="84" y="46" width="8" height="8" fill="#1A7A4A" />
+              <rect x="46" y="60" width="8" height="8" fill="#1A7A4A" />
+              <rect x="46" y="72" width="8" height="8" fill="#1A7A4A" />
+              <rect x="60" y="72" width="8" height="8" fill="#1A7A4A" />
+              <rect x="72" y="60" width="8" height="8" fill="#1A7A4A" />
+              <rect x="72" y="84" width="8" height="8" fill="#1A7A4A" />
+              <rect x="84" y="60" width="8" height="8" fill="#1A7A4A" />
+              <rect x="84" y="84" width="8" height="8" fill="#1A7A4A" />
+            </svg>
+            <div style="font-size:.6rem;color:#1A7A4A;font-weight:700;letter-spacing:.05em">darbox.live</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num" style="color:rgba(245,240,232,.3)">13 / 18</div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+     SLIDE 14 — CHARTES D'ENGAGEMENT
+══════════════════════════════════════════════════ -->
+  <section class="slide" style="background:var(--bg)">
+    <div class="t-label reveal" style="color:var(--accent);margin-bottom:16px">Engagements entrepreneuriaux</div>
+    <h2 class="t-title reveal" style="margin-bottom:24px">Charte d'engagement</h2>
+    <div class="three-col reveal" style="gap:14px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="card-light" style="border-top:3px solid var(--accent)">
+          <div style="font-size:1.1rem;margin-bottom:6px">الله</div>
+          <div style="font-weight:700;font-size:.85rem;margin-bottom:5px">Valeurs & Éthique</div>
+          <ul style="list-style:none;font-size:.78rem;opacity:.7;display:flex;flex-direction:column;gap:4px">
+            <li>· Intégrité technique totale</li>
+            <li>· Zéro collecte de données navigation</li>
+            <li>· Honnêteté sur les prix, sans frais cachés</li>
+          </ul>
+        </div>
+        <div class="card-light" style="border-top:3px solid var(--accent)">
+          <div style="font-size:1.1rem;margin-bottom:6px">🤝</div>
+          <div style="font-weight:700;font-size:.85rem;margin-bottom:5px">Clients</div>
+          <ul style="list-style:none;font-size:.78rem;opacity:.7;display:flex;flex-direction:column;gap:4px">
+            <li>· Qualité promise, prix promis, délai promis</li>
+            <li>· Garantie échange 30 jours</li>
+            <li>· Support WhatsApp réactif</li>
+          </ul>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="card-light" style="border-top:3px solid var(--muted)">
+          <div style="font-size:1.1rem;margin-bottom:6px">🏭</div>
+          <div style="font-weight:700;font-size:.85rem;margin-bottom:5px">Fournisseurs</div>
+          <ul style="list-style:none;font-size:.78rem;opacity:.7;display:flex;flex-direction:column;gap:4px">
+            <li>· Paiement à temps des grossistes</li>
+            <li>· Relation professionnelle de confiance</li>
+          </ul>
+        </div>
+        <div class="card-light" style="border-top:3px solid var(--muted)">
+          <div style="font-size:1.1rem;margin-bottom:6px">🌍</div>
+          <div style="font-weight:700;font-size:.85rem;margin-bottom:5px">Planète & Société</div>
+          <ul style="list-style:none;font-size:.78rem;opacity:.7;display:flex;flex-direction:column;gap:4px">
+            <li>· Routeurs reconditionnés privilégiés</li>
+            <li>· Protection active des mineurs marocains</li>
+            <li>· Réduction déchets électroniques</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="card-light" style="border-top:3px solid var(--accent2)">
+          <div style="font-size:1.1rem;margin-bottom:6px">💼</div>
+          <div style="font-weight:700;font-size:.85rem;margin-bottom:5px">Charte de vente</div>
+          <ul style="list-style:none;font-size:.78rem;opacity:.7;display:flex;flex-direction:column;gap:5px">
+            <li>· Aucun réseau publicitaire ni data broker</li>
+            <li>· Prix affichés = prix facturés</li>
+            <li>· Démonstration gratuite à la commande</li>
+            <li>· Retour sous 30j si insatisfaction</li>
+            <li>· Transparence totale sur la technologie</li>
+          </ul>
+        </div>
+        <div
+          style="margin-top:14px;padding:12px 14px;border-radius:10px;background:rgba(34,166,99,.08);border:1px solid rgba(34,166,99,.2)">
+          <p style="font-size:.8rem;font-style:italic;opacity:.75;line-height:1.5">«Chaque routeur vendu est un enfant
+            de plus protégé à Tanger.» — Merouan El Hattaki</p>
+        </div>
+      </div>
+    </div>
+    <div class="slide-num">14 / 18</div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+     SLIDE 15 — PRÉSENCE DIGITALE
+══════════════════════════════════════════════════ -->
+  <section class="slide" style="background:var(--bg-dark);color:var(--text-inv)">
+    <div class="grid-bg"></div>
+    <div class="t-label reveal" style="color:var(--accent);margin-bottom:16px">Présence digitale</div>
+    <h2 class="t-title reveal" style="color:var(--text-inv);margin-bottom:28px">darbox.live — L'écosystème digital</h2>
+    <div class="three-col reveal" style="gap:18px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="padding:18px;border-radius:12px;background:rgba(34,166,99,.1);border:1px solid rgba(34,166,99,.3)">
+          <div
+            style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:700;margin-bottom:10px">
+            🌐 Landing Page</div>
+          <div style="font-weight:600;margin-bottom:8px;color:var(--text-inv)">darbox.live</div>
+          <ul style="list-style:none;font-size:.8rem;opacity:.65;display:flex;flex-direction:column;gap:5px">
+            <li>· React 18 + Tailwind v4 + Vite</li>
+            <li>· Trilingue FR / EN / AR (RTL)</li>
+            <li>· Scroll reveal animé</li>
+            <li>· WhatsApp float button</li>
+            <li>· Testimonials carousel</li>
+          </ul>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div
+          style="padding:18px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+          <div
+            style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:700;margin-bottom:10px">
+            📄 Catalogue interactif</div>
+          <div style="font-weight:600;margin-bottom:8px;color:var(--text-inv)">darbox.live/catalogue</div>
+          <ul style="list-style:none;font-size:.8rem;opacity:.65;display:flex;flex-direction:column;gap:5px">
+            <li>· 4 offres avec tarifs complets</li>
+            <li>· Export PDF (3 langues)</li>
+            <li>· Tableau financier intégré</li>
+            <li>· Buyer persona Khadija</li>
+            <li>· QR code darbox.live</li>
+          </ul>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div
+          style="padding:18px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)">
+          <div
+            style="font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:700;margin-bottom:10px">
+            📧 Newsletter</div>
+          <div style="font-weight:600;margin-bottom:8px;color:var(--text-inv)">darbox.live/newsletter</div>
+          <ul style="list-style:none;font-size:.8rem;opacity:.65;display:flex;flex-direction:column;gap:5px">
+            <li>· EmailJS intégré</li>
+            <li>· Double opt-in</li>
+            <li>· Conseils sécurité familiale</li>
+            <li>· Guide gratuit «5 réflexes»</li>
+            <li>· Fréquence bi-mensuelle</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="reveal" style="margin-top:20px;display:flex;gap:20px;flex-wrap:wrap;align-items:center">
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="font-size:1.1rem">💬</span>
+        <span style="font-size:.85rem;opacity:.6">WhatsApp SAV</span>
+        <span style="font-size:.85rem;font-weight:600;color:var(--accent)">+212 621 429 030</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="font-size:1.1rem">📘</span>
+        <span style="font-size:.85rem;opacity:.6">Facebook groupes parents Tanger</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span style="font-size:1.1rem">📸</span>
+        <span style="font-size:.85rem;opacity:.6">Instagram démos vidéo</span>
+      </div>
+    </div>
+    <div class="slide-num" style="color:rgba(245,240,232,.3)">15 / 18</div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+     SLIDE 16 — ÉTUDE FINANCIÈRE (partie 1 — offres)
+══════════════════════════════════════════════════ -->
+  <section class="slide"
+    style="background:var(--bg);padding-top:clamp(20px,4vw,50px);padding-bottom:clamp(20px,4vw,50px)">
+    <div class="t-label reveal" style="color:var(--accent);margin-bottom:10px">Étude financière · Stratégie de prix
+    </div>
+    <h2 class="t-title reveal" style="margin-bottom:16px">Rentable dès la 1ère semaine.</h2>
+    <div class="reveal">
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:clamp(.75rem,1.2vw,.9rem)">
+          <thead>
+            <tr style="background:rgba(27,58,45,.06)">
+              <th
+                style="padding:10px 14px;text-align:left;font-family:var(--font-display);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;opacity:.5;border-bottom:2px solid var(--border)">
+                Offre</th>
+              <th
+                style="padding:10px 14px;text-align:center;font-family:var(--font-display);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;opacity:.5;border-bottom:2px solid var(--border)">
+                Prix vente</th>
+              <th
+                style="padding:10px 14px;text-align:center;font-family:var(--font-display);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;opacity:.5;border-bottom:2px solid var(--border)">
+                Coût de revient</th>
+              <th
+                style="padding:10px 14px;text-align:center;font-family:var(--font-display);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;opacity:.5;border-bottom:2px solid var(--border)">
+                Marge brute</th>
+              <th
+                style="padding:10px 14px;text-align:center;font-family:var(--font-display);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;opacity:.5;border-bottom:2px solid var(--border)">
+                Taux</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--border)">
+              <td style="padding:10px 14px;font-weight:500">🛡️ Essentiel</td>
+              <td style="padding:10px 14px;text-align:center;font-weight:700">400 DH</td>
+              <td style="padding:10px 14px;text-align:center;opacity:.6">230 DH</td>
+              <td style="padding:10px 14px;text-align:center;font-weight:700;color:var(--accent)">170 DH</td>
+              <td style="padding:10px 14px;text-align:center"><span
+                  style="background:rgba(34,166,99,.1);color:var(--accent);border-radius:6px;padding:3px 10px;font-weight:700;font-size:.82rem">43%</span>
+              </td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border);background:rgba(34,166,99,.04)">
+              <td style="padding:10px 14px;font-weight:700">⏰ Couvre-feu <span
+                  style="font-size:.72rem;background:var(--accent);color:#fff;border-radius:4px;padding:2px 7px;margin-left:6px;font-weight:600;letter-spacing:.04em">POPULAIRE</span>
+              </td>
+              <td style="padding:10px 14px;text-align:center;font-weight:800;color:var(--accent)">480 DH</td>
+              <td style="padding:10px 14px;text-align:center;opacity:.6">245 DH</td>
+              <td style="padding:10px 14px;text-align:center;font-weight:700;color:var(--accent)">235 DH</td>
+              <td style="padding:10px 14px;text-align:center"><span
+                  style="background:rgba(34,166,99,.15);color:var(--accent);border-radius:6px;padding:3px 10px;font-weight:700;font-size:.82rem">49%</span>
+              </td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border)">
+              <td style="padding:10px 14px;font-weight:500">📚 Anti-Distraction</td>
+              <td style="padding:10px 14px;text-align:center;font-weight:700">530 DH</td>
+              <td style="padding:10px 14px;text-align:center;opacity:.6">255 DH</td>
+              <td style="padding:10px 14px;text-align:center;font-weight:700;color:var(--accent)">275 DH</td>
+              <td style="padding:10px 14px;text-align:center"><span
+                  style="background:rgba(34,166,99,.15);color:var(--accent);border-radius:6px;padding:3px 10px;font-weight:700;font-size:.82rem">52%</span>
+              </td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border)">
+              <td style="padding:10px 14px;font-weight:500">🏠 Pack Maison</td>
+              <td style="padding:10px 14px;text-align:center;font-weight:700">750 DH</td>
+              <td style="padding:10px 14px;text-align:center;opacity:.6">425 DH</td>
+              <td style="padding:10px 14px;text-align:center;font-weight:700;color:var(--accent)">325 DH</td>
+              <td style="padding:10px 14px;text-align:center"><span
+                  style="background:rgba(34,166,99,.1);color:var(--accent);border-radius:6px;padding:3px 10px;font-weight:700;font-size:.82rem">43%</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:10px 14px;font-weight:500">⚙️ Config service</td>
+              <td style="padding:10px 14px;text-align:center;font-weight:700">150 DH</td>
+              <td style="padding:10px 14px;text-align:center;opacity:.6">20 DH</td>
+              <td style="padding:10px 14px;text-align:center;font-weight:700;color:var(--accent)">130 DH</td>
+              <td style="padding:10px 14px;text-align:center"><span
+                  style="background:rgba(34,166,99,.2);color:var(--accent);border-radius:6px;padding:3px 10px;font-weight:800;font-size:.82rem">87%</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:16px">
+        <div
+          style="padding:12px 18px;border-radius:10px;background:rgba(27,58,45,.06);border:1px solid var(--border);text-align:center">
+          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent)">250 DH</div>
+          <div style="font-size:.7rem;opacity:.5;margin-top:3px;text-transform:uppercase;letter-spacing:.08em">Charges
+            fixes/mois</div>
+        </div>
+        <div
+          style="padding:12px 18px;border-radius:10px;background:rgba(27,58,45,.06);border:1px solid var(--border);text-align:center">
+          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent)">~2 ventes
+          </div>
+          <div style="font-size:.7rem;opacity:.5;margin-top:3px;text-transform:uppercase;letter-spacing:.08em">Seuil de
+            rentabilité</div>
+        </div>
+        <div
+          style="padding:12px 18px;border-radius:10px;background:rgba(34,166,99,.1);border:1px solid rgba(34,166,99,.3);text-align:center">
+          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent)">6 jours
+          </div>
+          <div style="font-size:.7rem;opacity:.5;margin-top:3px;text-transform:uppercase;letter-spacing:.08em">Point
+            mort (1ère semaine)</div>
+        </div>
+        <div
+          style="padding:12px 18px;border-radius:10px;background:rgba(27,58,45,.06);border:1px solid var(--border);text-align:center">
+          <div style="font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--accent)">235 DH</div>
+          <div style="font-size:.7rem;opacity:.5;margin-top:3px;text-transform:uppercase;letter-spacing:.08em">Marge
+            brute moy. / unité</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:.78rem;opacity:.5;font-style:italic">Stratégie de pénétration : 400 DH
+        entrée de gamme pour créer la confiance → upsells naturels vers les offres premium → service de configuration à
+        87% de marge.</div>
+    </div>
+    <div class="slide-num">16 / 18</div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════
+     SLIDE 17 — PROJECTION 3 MOIS
+══════════════════════════════════════════════════ -->
+  <section class="slide"
+    style="background:var(--bg-dark);color:var(--text-inv);padding-top:clamp(20px,4vw,50px);padding-bottom:clamp(20px,4vw,50px)">
+    <div class="grid-bg"></div>
+    <div class="t-label reveal" style="color:var(--accent);margin-bottom:10px">Projection financière — 3 mois</div>
+    <h2 class="t-title reveal" style="color:var(--text-inv);margin-bottom:20px">Janvier → Mars 2026</h2>
+    <div class="three-col reveal" style="gap:16px;align-items:end;margin-bottom:20px">
+      <!-- JANVIER -->
+      <div style="display:flex;flex-direction:column;gap:0">
+        <div
+          style="padding:16px;border-radius:12px 12px 0 0;background:rgba(224,86,59,.12);border:1px solid rgba(224,86,59,.25);border-bottom:none">
+          <div
+            style="font-family:var(--font-display);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(224,86,59,.8);font-weight:700;margin-bottom:8px">
+            JANVIER — Préparation</div>
+          <div style="font-family:var(--font-display);font-size:2rem;font-weight:800;color:rgba(224,86,59,.9)">0 DH
+          </div>
+          <div style="font-size:.72rem;opacity:.5;margin-top:2px">Chiffre d'affaires</div>
+        </div>
+        <div
+          style="padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:0 0 12px 12px;font-size:.8rem">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <span style="opacity:.5">Charges variables</span><span>0 DH</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <span style="opacity:.5">Charges fixes</span><span>250 DH</span>
+          </div>
+          <div
+            style="display:flex;justify-content:space-between;font-weight:700;border-top:1px solid rgba(255,255,255,.08);padding-top:6px;margin-top:4px">
+            <span>Résultat</span><span style="color:rgba(224,86,59,.9)">-250 DH</span>
+          </div>
+          <div style="margin-top:8px;font-size:.72rem;opacity:.45;font-style:italic">Sourcing · Config test · Lancement
+            darbox.live</div>
+        </div>
+      </div>
+      <!-- FEVRIER -->
+      <div style="display:flex;flex-direction:column;gap:0">
+        <div
+          style="padding:16px;border-radius:12px 12px 0 0;background:rgba(34,166,99,.1);border:1px solid rgba(34,166,99,.3);border-bottom:none">
+          <div
+            style="font-family:var(--font-display);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:700;margin-bottom:8px">
+            FÉVRIER — Lancement</div>
+          <div style="font-family:var(--font-display);font-size:2rem;font-weight:800;color:var(--accent)"
+            data-count="1920" data-suffix=" DH">0 DH</div>
+          <div style="font-size:.72rem;opacity:.5;margin-top:2px">4 ventes × 480 DH moy.</div>
+        </div>
+        <div
+          style="padding:12px 16px;background:rgba(255,255,255,.04);borde      <img
+        src="Darbox_Logo.svg"
+        alt="DarBox" class="reveal"
+        style="height:clamp(48px,7vw,80px);object-fit:contain;margin-bottom:24px;filter:brightness(0) invert(100%) sepia(5%) saturate(100%) hue-rotate(314deg) brightness(105%) contrast(95%);">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"
+        alt="DarBox" class="reveal"
+        style="height:clamp(48px,7vw,80px);object-fit:contain;margin-bottom:24px;filter:brightness(1.1)">
+      <h1 class="t-hero reveal" style="color:var(--text-inv);text-align:center">
+        Branchez.<br>
+        <em style="color:var(--accent);font-style:normal">Protégez.</em><br>
+        Respirez.
+      </h1>
+      <p class="t-sub reveal"
+        style="margin-top:20px;text-align:center;opacity:.55;max-width:520px;color:var(--text-inv)">DarBox — La
+        tranquillité d'esprit, livrée dans une boîte. Pour chaque famille de Tanger.</p>
+      <div class="reveal" style="display:flex;gap:14px;margin-top:28px;flex-wrap:wrap;justify-content:center">
+        <a href="https://darbox.live"
+          style="display:flex;align-items:center;gap:8px;padding:12px 22px;border-radius:10px;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;font-size:.9rem;transition:opacity .2s"
+          onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+          🌐 darbox.live
+        </a>
+        <a href="https://wa.me/212621429030"
+          style="display:flex;align-items:center;gap:8px;padding:12px 22px;border-radius:10px;background:rgba(255,255,255,.08);color:var(--text-inv);text-decoration:none;font-weight:600;font-size:.9rem;border:1px solid rgba(255,255,255,.15);transition:opacity .2s"
+          onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">
+          💬 +212 621 429 030
+        </a>
+      </div>
+      <div class="reveal" style="margin-top:36px;display:flex;gap:28px;justify-content:center;flex-wrap:wrap">
+        <div style="text-align:center">
+          <div style="font-family:var(--font-display);font-size:1.8rem;font-weight:800;color:var(--accent)">6j</div>
+          <div style="font-size:.7rem;opacity:.35;margin-top:3px;text-transform:uppercase;letter-spacing:.08em">Point
+            mort</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-family:var(--font-display);font-size:1.8rem;font-weight:800;color:var(--accent)">87%</div>
+          <div style="font-size:.7rem;opacity:.35;margin-top:3px;text-transform:uppercase;letter-spacing:.08em">Marge
+            config</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-family:var(--font-display);font-size:1.8rem;font-weight:800;color:var(--accent)">0</div>
+          <div style="font-size:.7rem;opacity:.35;margin-top:3px;text-transform:uppercase;letter-spacing:.08em">Dev
+            logiciel</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-family:var(--font-display);font-size:1.8rem;font-weight:800;color:var(--accent)">5min</div>
+          <div style="font-size:.7rem;opacity:.35;margin-top:3px;text-transform:uppercase;letter-spacing:.08em">
+            Installation</div>
+        </div>
+      </div>
+      <p class="t-body reveal" style="margin-top:28px;opacity:.25;font-style:italic;color:var(--text-inv)">Merouan El
+        Hattaki · OFPPT ISMONTIC · PIE Phase 6 · 2026</p>
+    </div>
+    <div class="slide-num" style="color:rgba(245,240,232,.3)">18 / 18</div>
+  </section>
+
+  <script>
+    class DeckController {
+      constructor() {
+        this.slides = document.querySelectorAll('.slide');
+        this.dots = document.querySelectorAll('.nav-dot');
+        this.progressBar = document.querySelector('.progress-bar');
+        this.keyHint = document.querySelector('.key-hint');
+        this.current = 0;
+        this.init();
+      }
+      init() {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              const idx = [...this.slides].indexOf(entry.target);
+              this.updateUI(idx);
+              entry.target.querySelectorAll('[data-count]').forEach(el => {
+                this.animateCounter(el, parseInt(el.dataset.count), el.dataset.suffix || '');
+              });
+              entry.target.querySelectorAll('.bar-fill[data-width]').forEach(bar => {
+                setTimeout(() => { bar.style.width = bar.dataset.width; }, 350);
+              });
+            }
+          });
+        }, { threshold: 0.45 });
+        this.slides.forEach(s => io.observe(s));
+        document.addEventListener('keydown', e => {
+          if (['ArrowDown', 'ArrowRight', 'Space'].includes(e.code)) { e.preventDefault(); this.goTo(this.current + 1); }
+          if (['ArrowUp', 'ArrowLeft'].includes(e.code)) { e.preventDefault(); this.goTo(this.current - 1); }
+        });
+        this.dots.forEach((dot, i) => dot.addEventListener('click', () => this.goTo(i)));
+        let ty = 0;
+        document.addEventListener('touchstart', e => { ty = e.touches[0].clientY; }, { passive: true });
+        document.addEventListener('touchend', e => {
+          const d = ty - e.changedTouches[0].clientY;
+          if (Math.abs(d) > 40) this.goTo(this.current + (d > 0 ? 1 : -1));
+        });
+        if (this.keyHint) setTimeout(() => { this.keyHint.style.opacity = '0'; }, 5000);
+      }
+      goTo(idx) {
+        if (idx < 0 || idx >= this.slides.length) return;
+        this.slides[idx].scrollIntoView({ behavior: 'smooth' });
+      }
+      updateUI(idx) {
+        this.current = idx;
+        const p = ((idx + 1) / this.slides.length) * 100;
+        if (this.progressBar) this.progressBar.style.width = p + '%';
+        this.dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+      animateCounter(el, target, suffix = '') {
+        const duration = 1300;
+        const start = performance.now();
+        const update = (time) => {
+          const t = Math.min((time - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - t, 3);
+          const val = Math.floor(eased * target);
+          el.textContent = val.toLocaleString('fr-FR') + suffix;
+          if (t < 1) requestAnimationFrame(update);
+        };
+        requestAnimationFrame(update);
+      }
+    }
+
+    const slides = document.querySelectorAll('.slide');
+    const nav = document.querySelector('.nav-dots');
+    slides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'nav-dot';
+      dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+      nav.appendChild(dot);
+    });
+    new DeckController();
+  </script>
+</body>
+
+</html>
