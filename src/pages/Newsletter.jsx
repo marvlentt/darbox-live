@@ -262,7 +262,7 @@ export default function Newsletter({ lang }) {
             {t.footerPhone} · {t.footerEmail}
           </p>
           <p className="text-[10px] text-white/15 leading-relaxed mt-3.5">
-            © 2025 DarBox · {t.badge}
+            © 2026 DarBox · {t.badge}
           </p>
         </div>
       </div>

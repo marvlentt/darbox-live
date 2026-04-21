@@ -1,11 +1,11 @@
 // ── Catalogue translations (FR) ──
 export const CT = {
   fr: {
-    heroSub1: 'CATALOGUE 2025',
+    heroSub1: 'CATALOGUE 2026',
     heroTag1: 'La tranquillité', heroTag2: "d'esprit,", heroTag3: 'livrée dans', heroTag4: 'une boîte.',
     heroSlogan: 'Branchez. Protégez. Respirez.',
     heroFooter: 'Protection internet plug & play · Tanger, Maroc',
-    heroCredit: 'Merouan El Hattaki · OFPPT ISMONTIC · PIE 2025',
+    heroCredit: 'Merouan El Hattaki · Fondateur',
     heroBadge: '🛡️ SÉCURISÉ',
     probTitle: 'POUR LES FAMILLES DE TANGER',
     probSub: 'Dans un monde où les écrans sont partout,',
@@ -68,11 +68,11 @@ export const CT = {
     printBtn: 'Imprimer PDF',
   },
   en: {
-    heroSub1: 'CATALOGUE 2025',
+    heroSub1: 'CATALOGUE 2026',
     heroTag1: 'Peace of mind,', heroTag2: 'delivered in', heroTag3: 'a box.', heroTag4: '',
     heroSlogan: 'Plug. Protect. Breathe.',
     heroFooter: 'Plug & play internet protection · Tangier, Morocco',
-    heroCredit: 'Merouan El Hattaki · OFPPT ISMONTIC · PIE 2025',
+    heroCredit: 'Merouan El Hattaki · Founder',
     heroBadge: '🛡️ SECURED',
     probTitle: 'FOR TANGIER FAMILIES',
     probSub: 'In a world where screens are everywhere,',
@@ -135,11 +135,11 @@ export const CT = {
     printBtn: 'Print PDF',
   },
   ar: {
-    heroSub1: 'كتالوج 2025',
+    heroSub1: 'كتالوج 2026',
     heroTag1: 'راحة البال،', heroTag2: 'موصولة', heroTag3: 'في علبة.', heroTag4: '',
     heroSlogan: 'ركّب. احمِ. ارتاح.',
     heroFooter: 'حماية إنترنت جاهزة · طنجة، المغرب',
-    heroCredit: 'مروان الحطاكي · OFPPT ISMONTIC · PIE 2025',
+    heroCredit: 'مروان الحطاكي · المؤسس',
     heroBadge: '🛡️ مؤمّن',
     probTitle: 'لعائلات طنجة', probSub: 'في عالم كاملو شاشات،', probQ: 'كيفاش نحميو ولادنا؟',
     prob1Icon: '😰', prob1T: 'محتوى خطير', prob1D: 'مواقع للبالغين والقمار والبرمجيات الخبيثة متاحة من أول اتصال Wi-Fi.',

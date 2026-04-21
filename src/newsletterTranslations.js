@@ -59,7 +59,7 @@ export const NT = {
     ctaBtn: 'Découvrir DarBox →', ctaWa: 'WhatsApp',
     footerSiteWeb: 'Site web',
     footerContact: 'Merouan El Hattaki', footerRole: 'Fondateur & Technicien Réseau Certifié CCNA',
-    footerSchool: 'OFPPT ISMONTIC · Tanger, Maroc',
+    footerSchool: 'Tanger, Maroc',
     footerPhone: '+212 621 429 030', footerEmail: 'merouan@darbox.ma',
   },
   en: {
@@ -121,7 +121,7 @@ export const NT = {
     ctaBtn: 'Discover DarBox →', ctaWa: 'WhatsApp',
     footerSiteWeb: 'Website',
     footerContact: 'Merouan El Hattaki', footerRole: 'Founder & CCNA Certified Network Technician',
-    footerSchool: 'OFPPT ISMONTIC · Tangier, Morocco',
+    footerSchool: 'Tangier, Morocco',
     footerPhone: '+212 621 429 030', footerEmail: 'merouan@darbox.ma',
   },
   ar: {
@@ -183,7 +183,7 @@ export const NT = {
     ctaBtn: 'اكتشف DarBox ←', ctaWa: 'واتساب',
     footerSiteWeb: 'الموقع',
     footerContact: 'مروان الحطاكي', footerRole: 'مؤسس وتقني شبكات معتمد CCNA',
-    footerSchool: 'OFPPT ISMONTIC · طنجة، المغرب',
+    footerSchool: 'طنجة، المغرب',
     footerPhone: '+212 621 429 030', footerEmail: 'merouan@darbox.ma',
   },
 };

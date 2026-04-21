@@ -64,7 +64,7 @@ export const T = {
     ctVcard: "Enregistrer le contact", ctBack: "Retour en haut",
     ftDesc: "Protection internet plug & play pour les familles marocaines. Conçu à Tanger.", ftProd: "Produit", ftContact: "Contact", ftLegal: "Légal",
     ftCond: "Conditions de vente", ftPriv: "Politique de confidentialité", ftWar: "Garantie & retour",
-    ftCopy: "© 2025 DarBox · Tanger, Maroc", ftMade: "Fabriqué avec ❤️ par Merouan El Hattaki",
+    ftCopy: "© 2026 DarBox · Tanger, Maroc", ftMade: "Fabriqué avec ❤️ par Merouan El Hattaki",
     storyTitle: "Ce que vous obtenez concrètement",
   },
   en: {
@@ -132,7 +132,7 @@ export const T = {
     ctVcard: "Save contact", ctBack: "Back to top",
     ftDesc: "Plug & play internet protection for Moroccan families. Designed in Tangier.", ftProd: "Product", ftContact: "Contact", ftLegal: "Legal",
     ftCond: "Terms of sale", ftPriv: "Privacy policy", ftWar: "Warranty & returns",
-    ftCopy: "© 2025 DarBox · Tangier, Morocco", ftMade: "Made with ❤️ by Merouan El Hattaki",
+    ftCopy: "© 2026 DarBox · Tangier, Morocco", ftMade: "Made with ❤️ by Merouan El Hattaki",
     storyTitle: "What you actually get",
   },
   ar: {
@@ -200,7 +200,7 @@ export const T = {
     ctVcard: "حفظ جهة الاتصال", ctBack: "العودة للأعلى",
     ftDesc: "حماية إنترنت جاهزة للعائلات المغربية. مُصمم فطنجة.", ftProd: "المنتج", ftContact: "التواصل", ftLegal: "قانوني",
     ftCond: "شروط البيع", ftPriv: "سياسة الخصوصية", ftWar: "الضمان والإرجاع",
-    ftCopy: "© 2025 DarBox · طنجة، المغرب", ftMade: "صنع بـ ❤️ بواسطة مروان الحطاكي",
+    ftCopy: "© 2026 DarBox · طنجة، المغرب", ftMade: "صنع بـ ❤️ بواسطة مروان الحطاكي",
     storyTitle: "شنو غادي تحصل عليه فالحقيقة",
   },
 };
