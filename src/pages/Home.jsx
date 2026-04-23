@@ -1,11 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, Download, Mail, Globe, Shield, UserPlus, ChevronUp, Check } from 'lucide-react';
+import { ArrowRight, Download, Mail, Globe, Shield, UserPlus, ChevronUp, Check, MessageCircle, Search, ShieldCheck } from 'lucide-react';
 import { drawerData } from '../drawerData.js';
+import emailjs from '@emailjs/browser';
 
 const RSvg = () => (<svg className="w-40 h-[120px]" viewBox="0 0 160 120" fill="none"><rect x="30" y="65" width="100" height="40" rx="8" fill="#1a1a2e"/><rect x="40" y="73" width="12" height="12" rx="3" fill="#22a663"/><rect x="58" y="73" width="8" height="8" rx="2" fill="#22a663" opacity=".5"/><rect x="72" y="73" width="8" height="8" rx="2" fill="#e8a020" opacity=".7"/><rect x="45" y="40" width="5" height="28" rx="2.5" fill="#333"/><rect x="110" y="35" width="5" height="33" rx="2.5" fill="#333"/><path d="M60 55Q80 35 100 55" stroke="#22a663" strokeWidth="3" strokeLinecap="round" fill="none" opacity=".8"/><path d="M52 62Q80 28 108 62" stroke="#22a663" strokeWidth="2.5" strokeLinecap="round" fill="none" opacity=".5"/><circle cx="80" cy="60" r="4" fill="#22a663"/><rect x="74" y="105" width="12" height="10" rx="2" fill="#555"/></svg>);
 
 function OfferDrawer({ data, open, onClose, t }) {
   if (!data) return null;
+  const getWaLink = (id) => {
+    if (id === 'config') return "https://wa.me/212621429030?text=Bonjour%2C+je+veux+configurer+mon+routeur+existant.";
+    const msgs = {
+      'essentiel': "Essentiel+%28400+DH%29.",
+      'couvrefeu': "Couvre-feu+%28480+DH%29.",
+      'anti': "Anti-Distraction+%28530+DH%29.",
+      'maison': "Pack+Maison+%28750+DH%29."
+    };
+    return `https://wa.me/212621429030?text=Bonjour%2C+je+souhaite+commander+DarBox+${msgs[id] || ''}`;
+  };
   return (<>
     <div className={`drawer-overlay ${open ? 'open' : ''}`} onClick={onClose} />
     <div className={`drawer-panel ${open ? 'open' : ''}`}>
@@ -49,7 +60,7 @@ function OfferDrawer({ data, open, onClose, t }) {
         </div>
       </div>
       <div className="sticky bottom-0 p-6 bg-[#0d1117] border-t border-white/10 flex gap-3">
-        <a href="https://wa.me/212600000000" className="flex-1 py-3.5 bg-[#1a7a4a] text-white rounded-full font-bold text-center no-underline hover:bg-[#22a663] transition-colors">{data.cta}</a>
+        <a href={getWaLink(data.id)} target="_blank" rel="noopener noreferrer" className="flex-1 py-3.5 bg-[#1a7a4a] text-white rounded-full font-bold text-center no-underline hover:bg-[#22a663] transition-colors">{data.cta}</a>
         <button onClick={onClose} className="px-6 py-3.5 bg-white/10 text-white/70 rounded-full font-semibold hover:bg-white/20 transition-colors">{data.close}</button>
       </div>
     </div>
@@ -58,6 +69,15 @@ function OfferDrawer({ data, open, onClose, t }) {
 
 export default function Home({ t, lang, go }) {
   const rtl = lang === 'ar';
+  const getWaLinkPlan = (idx) => {
+    const msgs = [
+      "Essentiel+%28400+DH%29.",
+      "Couvre-feu+%28480+DH%29.",
+      "Anti-Distraction+%28530+DH%29.",
+      "Pack+Maison+%28750+DH%29."
+    ];
+    return `https://wa.me/212621429030?text=Bonjour%2C+je+souhaite+commander+DarBox+${msgs[idx]}`;
+  };
   const dd = lang ? drawerData[lang] : drawerData.fr;
   const [faq, setFaq] = useState(null);
   const [drawer, setDrawer] = useState(null);
@@ -65,12 +85,31 @@ export default function Home({ t, lang, go }) {
   const [metVis, setMetVis] = useState(false);
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (email.trim()) {
-      setEmail('');
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        {
+          subscriber_email: email,
+          to_email: 'merouan@darbox.live',
+          reply_to: email,
+        },
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
       setIsSubscribed(true);
+    } catch (err) {
+      setError("Une erreur est survenue. Réessayez ou contactez-nous sur WhatsApp.");
+      console.error('EmailJS error:', err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -141,7 +180,7 @@ export default function Home({ t, lang, go }) {
             </div>
             <div className="flex justify-between items-baseline border-t border-[#ebebeb] pt-5">
               <div><div className="text-[2rem] font-extrabold">{t.rPrice} <span className="text-base font-normal text-[#9a9a9a]">{t.rCur}</span></div><div className="text-[.78rem] text-[#9a9a9a]">{t.rSub}</div></div>
-              <button onClick={() => go('offres')} className="bg-[#1a7a4a] text-white px-5 py-3 rounded-full font-semibold text-[.88rem] border-none cursor-pointer hover:bg-[#22a663] transition-colors">{t.rBuy}</button>
+              <a href={getWaLinkPlan(0)} target="_blank" rel="noopener noreferrer" className="bg-[#1a7a4a] text-white px-5 py-3 rounded-full font-semibold text-[.88rem] border-none cursor-pointer hover:bg-[#22a663] transition-colors no-underline block">{t.rBuy}</a>
             </div>
           </div>
         </div>
@@ -175,7 +214,7 @@ export default function Home({ t, lang, go }) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-0.5 bg-[#ebebeb] rounded-[14px] overflow-hidden border border-[#ebebeb] reveal">
           {[{ n: '01', ic: '🔌', ti: t.st1T, de: t.st1D }, { n: '02', ic: '⚙️', ti: t.st2T, de: t.st2D }, { n: '03', ic: '😌', ti: t.st3T, de: t.st3D }].map((s, i) => (
             <div key={i} className="bg-white p-8 lg:p-11 group hover:bg-[#e8f5ee] transition-colors">
-              <div className="text-[3.5rem] font-extrabold text-[#ebebeb] leading-none mb-5 group-hover:text-[rgba(26,122,74,.2)] transition-colors">{s.n}</div>
+              <div className="text-7xl font-black text-[#1A7A4A] leading-none mb-5 transition-colors">{s.n}</div>
               <div className="w-[52px] h-[52px] bg-[#e8f5ee] rounded-[14px] flex items-center justify-center mb-5 text-2xl">{s.ic}</div>
               <div className="text-[1.15rem] font-bold mb-2.5">{s.ti}</div>
               <p className="text-[.9rem] text-[#5a5a5a] leading-relaxed">{s.de}</p>
@@ -207,7 +246,7 @@ export default function Home({ t, lang, go }) {
               <ul className="list-none flex-1 mb-5 space-y-2">{pl.f.map((f, j) => (
                 <li key={j} className={`flex items-start gap-2 text-[.84rem] ${pl.feat ? 'text-white/80' : 'text-[#5a5a5a]'}`}><span className={`font-bold shrink-0 ${pl.feat ? 'text-[#e8a020]' : 'text-[#1a7a4a]'}`}>✓</span>{f}</li>
               ))}</ul>
-              <button onClick={() => go('offres')} className={`block w-full text-center py-3 rounded-full font-semibold text-[.88rem] border-[1.5px] transition-all mb-2 ${pl.feat ? 'bg-white text-[#0d1117] border-white hover:bg-[#e8f5ee]' : 'border-[#ebebeb] text-[#0d1117] hover:bg-[#e8f5ee] hover:border-[#1a7a4a]'}`}>{t.plCta}</button>
+              <a href={getWaLinkPlan(pl.i)} target="_blank" rel="noopener noreferrer" className={`block w-full text-center py-3 rounded-full font-semibold text-[.88rem] border-[1.5px] transition-all mb-2 no-underline ${pl.feat ? 'bg-white text-[#0d1117] border-white hover:bg-[#e8f5ee]' : 'border-[#ebebeb] text-[#0d1117] hover:bg-[#e8f5ee] hover:border-[#1a7a4a]'}`}>{t.plCta}</a>
               <button onClick={() => setDrawer(pl.i)} className={`text-[.82rem] font-medium underline underline-offset-4 group flex items-center gap-1 mx-auto ${pl.feat ? 'text-white/70 hover:text-white decoration-white/30' : 'text-[#5a5a5a] hover:text-[#1a7a4a] decoration-[#ebebeb]'}`}>
                 {t.plDetails} <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </button>
@@ -215,20 +254,64 @@ export default function Home({ t, lang, go }) {
           ))}
         </div>
         {/* SERVICE CONFIG CARD */}
-        <div className="mt-6 bg-[#161b22] border-l-4 border-[#E0563B] rounded-[20px] p-7 reveal">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="flex-1">
-              <div className="text-white font-bold text-lg mb-2">{t.svcTitle}</div>
-              <div className="flex flex-wrap gap-4 text-white/70 text-[.88rem]">
-                <span>{t.svcRemote}</span><span>{t.svcOnsite}</span><span>{t.svcUpdate}</span>
+        {/* SERVICE CONFIG CARD */}
+        <div className="mt-12 bg-white rounded-[20px] p-8 md:p-10 border border-[#ebebeb] shadow-sm reveal">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl md:text-3xl font-extrabold text-[#0d1117] mb-3">Vous avez déjà un routeur ? On le configure.</h3>
+            <p className="text-[#5a5a5a]">Pas besoin d'acheter du matériel.</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-14 h-14 bg-[#e8f5ee] text-[#1a7a4a] rounded-full flex items-center justify-center mb-4">
+                <MessageCircle className="w-6 h-6" />
               </div>
+              <h4 className="font-bold text-[#0d1117] mb-2">1 · Contactez-nous</h4>
+              <p className="text-sm text-[#5a5a5a]">Envoyez-nous la marque et le modèle de votre routeur sur WhatsApp. On vérifie la compatibilité gratuitement.</p>
             </div>
-            <div className="flex items-center gap-4">
-              <a href="https://wa.me/212600000000" className="px-6 py-3 bg-[#E0563B] text-white rounded-full font-bold text-[.88rem] no-underline hover:bg-[#c94930] transition-colors whitespace-nowrap">{t.svcCta}</a>
-              <button onClick={() => setDrawer(4)} className="text-white/60 text-[.82rem] underline underline-offset-4 hover:text-white transition-colors whitespace-nowrap group flex items-center gap-1">
-                {t.plDetails} <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-              </button>
+            <div className="flex flex-col items-center text-center relative">
+              <div className="hidden md:block absolute top-7 -left-1/2 w-full h-[2px] bg-[#e8f5ee] -z-10" />
+              <div className="w-14 h-14 bg-[#e8f5ee] text-[#1a7a4a] rounded-full flex items-center justify-center mb-4">
+                <Search className="w-6 h-6" />
+              </div>
+              <h4 className="font-bold text-[#0d1117] mb-2">2 · Diagnostic & devis</h4>
+              <p className="text-sm text-[#5a5a5a]">On évalue si la config peut se faire à distance ou nécessite un déplacement. Réponse sous 2h.</p>
             </div>
+            <div className="flex flex-col items-center text-center relative">
+              <div className="hidden md:block absolute top-7 -left-1/2 w-full h-[2px] bg-[#e8f5ee] -z-10" />
+              <div className="w-14 h-14 bg-[#e8f5ee] text-[#1a7a4a] rounded-full flex items-center justify-center mb-4">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <h4 className="font-bold text-[#0d1117] mb-2">3 · Configuration & test</h4>
+              <p className="text-sm text-[#5a5a5a]">On applique DNS, filtres et couvre-feux. Vous testez en direct, on valide ensemble.</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+            <div className="bg-[#f5f0e8] p-5 rounded-2xl border border-[#ebebeb]">
+              <div className="text-xl mb-2">📡</div>
+              <h5 className="font-bold text-[#0d1117] mb-1">À distance</h5>
+              <div className="text-[#1a7a4a] font-black text-xl mb-2">150 DH</div>
+              <p className="text-xs text-[#5a5a5a]">Votre routeur reste chez vous</p>
+            </div>
+            <div className="bg-[#f5f0e8] p-5 rounded-2xl border border-[#ebebeb]">
+              <div className="text-xl mb-2">🏠</div>
+              <h5 className="font-bold text-[#0d1117] mb-1">Sur site</h5>
+              <div className="text-[#1a7a4a] font-black text-xl mb-2">200 DH</div>
+              <p className="text-xs text-[#5a5a5a]">Déplacement à Tanger (30 km max)</p>
+            </div>
+            <div className="bg-[#f5f0e8] p-5 rounded-2xl border border-[#ebebeb]">
+              <div className="text-xl mb-2">🔧</div>
+              <h5 className="font-bold text-[#0d1117] mb-1">Mise à jour</h5>
+              <div className="text-[#1a7a4a] font-black text-xl mb-2">80 DH</div>
+              <p className="text-xs text-[#5a5a5a]">Modifier vos règles après achat</p>
+            </div>
+          </div>
+
+          <div className="text-center flex justify-center gap-4 flex-wrap">
+            <a href="https://wa.me/212621429030?text=Bonjour%2C+je+veux+configurer+mon+routeur+existant." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-8 py-4 bg-[#1a7a4a] hover:bg-[#22a663] text-white rounded-full font-bold transition-colors no-underline">
+              Demander un devis sur WhatsApp →
+            </a>
           </div>
         </div>
       </section>
@@ -254,32 +337,11 @@ export default function Home({ t, lang, go }) {
 
       {/* ═══ TESTIMONIALS ═══ */}
       <section id="avis" className="py-[100px] px-6 lg:px-[60px] bg-[#0d1117] overflow-hidden">
-        <div className="flex justify-between items-end mb-12 gap-6 flex-wrap reveal">
-          <div>
-            <div className="inline-flex items-center gap-1.5 bg-[rgba(26,122,74,.3)] text-[#22a663] px-3 py-1 rounded-full text-[.75rem] font-bold tracking-wider uppercase mb-4">● {t.teTag}</div>
-            <h2 className="text-[clamp(2rem,3.2vw,3rem)] font-extrabold leading-[1.1] text-white mb-4">{t.teTitle}</h2>
-            <p className="text-base text-white/60 max-w-[540px]">{t.teSub}</p>
-          </div>
-          <div className="flex gap-6 text-white/50 text-[.85rem] items-end">
-            <div><div className="text-2xl font-extrabold text-white">{t.teS1}</div><div>{t.teS1L}</div></div>
-            <div><div className="text-2xl font-extrabold text-white">{t.teS2}</div><div>{t.teS2L}</div></div>
-          </div>
-        </div>
-        <div className="overflow-hidden">
-          <div className="testi-track">
-            {[1, 2, 3, 4, 5, 1, 2, 3, 4, 5].map((n, i) => {
-              const cols = ['#1a7a4a', '#e8a020', '#3b82f6', '#8b5cf6', '#ef4444'];
-              const init = ['FZ', 'MK', 'HA', 'NB', 'SA'];
-              return (<div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-6 w-[300px] shrink-0">
-                <div className="text-[#e8a020] text-[.8rem] mb-3">★★★★★</div>
-                <div className="text-[.9rem] leading-relaxed text-white/80 mb-[18px] italic">{t[`te${n}Q`]}</div>
-                <div className="flex items-center gap-3">
-                  <div className="w-[38px] h-[38px] rounded-full flex items-center justify-center font-bold text-[.85rem] text-white shrink-0" style={{ background: cols[n - 1] }}>{init[n - 1]}</div>
-                  <div><div className="font-semibold text-[.85rem] text-white">{t[`te${n}N`]}</div><div className="text-[.75rem] text-white/50">{t[`te${n}R`]}</div></div>
-                </div>
-              </div>);
-            })}
-          </div>
+        <div className="max-w-[700px] mx-auto text-center reveal">
+          <div className="inline-flex items-center gap-1.5 bg-[rgba(26,122,74,.3)] text-[#22a663] px-3 py-1 rounded-full text-[.75rem] font-bold tracking-wider uppercase mb-6">● {t.teTag}</div>
+          <h2 className="text-[clamp(2rem,3.2vw,3rem)] font-extrabold leading-[1.1] text-white mb-6">Rejoignez les premières familles protégées à Tanger.</h2>
+          <p className="text-lg text-white/60 mx-auto mb-10">DarBox est en phase de lancement. Soyez parmi les premiers.</p>
+          <a href="https://wa.me/212621429030?text=Bonjour%2C+je+souhaite+commander+DarBox." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-10 py-5 bg-[#1a7a4a] hover:bg-[#22a663] text-white rounded-full font-bold text-lg transition-colors no-underline shadow-lg">Commander maintenant →</a>
         </div>
       </section>
 
@@ -334,7 +396,7 @@ export default function Home({ t, lang, go }) {
       </section>
 
       {/* ═══ NEWSLETTER ═══ */}
-      <section className="py-[100px] px-6 lg:px-[60px] bg-white">
+      <section id="newsletter" className="py-[100px] px-6 lg:px-[60px] bg-white">
         <div className="max-w-[900px] mx-auto bg-gradient-to-r from-blue-50 to-slate-50 border border-blue-100 rounded-3xl p-10 md:p-14 text-center shadow-xl reveal">
           <div className="w-20 h-20 bg-white shadow-md text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-8 -rotate-6"><Mail className="w-10 h-10" /></div>
           <h2 className="text-3xl font-extrabold text-[#0d1117] mb-4">{t.nlT}</h2>
@@ -345,32 +407,63 @@ export default function Home({ t, lang, go }) {
                 <Check className="w-7 h-7 text-white" />
               </div>
               <p className="text-[#1a7a4a] font-bold text-lg">✅ Merci ! Votre adresse a bien été ajoutée.</p>
-              <p className="text-[#5a5a5a] text-sm">{t.nlSuccess || 'Vous recevrez notre prochaine édition directement dans votre boîte mail.'}</p>
+              <p className="text-[#5a5a5a] text-sm">Bienvenue ! Vous recevrez nos prochains conseils à {email}.</p>
             </div>
           ) : (
-            <form className="flex flex-col sm:flex-row max-w-xl mx-auto gap-4" onSubmit={handleSubmit}>
-              <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder={t.nlP} className="flex-1 px-6 py-4 rounded-full border border-[#ebebeb] focus:outline-none focus:ring-2 focus:ring-[#1a7a4a] transition-all text-lg" required />
-              <button type="submit" className="px-8 py-4 bg-[#0d1117] hover:bg-[#1a7a4a] text-white rounded-full font-bold text-lg transition-colors whitespace-nowrap">{t.nlB}</button>
-            </form>
+            <>
+              <form className="flex flex-col sm:flex-row max-w-xl mx-auto gap-4" onSubmit={handleSubmit}>
+                <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder={t.nlP} className="flex-1 px-6 py-4 rounded-full border border-[#ebebeb] focus:outline-none focus:ring-2 focus:ring-[#1a7a4a] transition-all text-lg" required disabled={isLoading} />
+                <button type="submit" disabled={isLoading} className="px-8 py-4 bg-[#0d1117] hover:bg-[#1a7a4a] text-white rounded-full font-bold text-lg transition-colors whitespace-nowrap disabled:opacity-50">
+                  {isLoading ? 'Envoi...' : t.nlB}
+                </button>
+              </form>
+              {error && <p className="text-red-500 mt-3 text-sm">{error}</p>}
+            </>
           )}
         </div>
       </section>
 
       {/* ═══ CONTACT ═══ */}
       <section id="contact" className="py-[100px] px-6 lg:px-[60px] bg-[#f5f0e8]">
-        <div className="max-w-4xl mx-auto text-center reveal">
-          <h2 className="text-3xl font-extrabold mb-12">{t.ctTitle}</h2>
-          <div className="bg-[#0d1117] text-white rounded-[2rem] p-8 md:p-12 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-10">
-            <div className="text-left flex-1">
-              <h3 className="text-2xl font-bold mb-2">{t.ctName}</h3>
-              <p className="text-[#e8a020] font-medium text-lg mb-6">{t.ctRole}</p>
-              <p className="flex items-center gap-3 text-slate-300 mb-3"><Globe className="w-5 h-5 text-slate-500" />{t.ctCity}</p>
-              <p className="flex items-center gap-3 text-slate-300"><Shield className="w-5 h-5 text-slate-500" />{t.ctSvc}</p>
+        <div className="max-w-[400px] mx-auto text-center reveal">
+          <div className="bg-[#0d1117] text-white rounded-[2rem] p-8 shadow-2xl flex flex-col items-center">
+            <h3 className="text-2xl font-bold mb-1">Merouan El Hattaki</h3>
+            <p className="text-[#e8a020] font-medium text-[.9rem] mb-6">Fondateur, DarBox</p>
+            <p className="flex items-center gap-2 text-slate-300 text-[.9rem] mb-2"><Globe className="w-4 h-4 text-slate-500" />Tanger, Maroc</p>
+            <p className="flex items-center gap-2 text-slate-300 text-[.9rem] mb-8"><Globe className="w-4 h-4 text-slate-500" />darbox.live</p>
+            
+            <div className="w-full flex flex-col gap-3">
+              <button 
+                onClick={() => {
+                  const vcf = `BEGIN:VCARD\nVERSION:3.0\nFN:Merouan El Hattaki\nORG:DarBox\nTITLE:Fondateur\nEMAIL;TYPE=INTERNET:merouan@darbox.live\nTEL;TYPE=CELL:+212621429030\nURL:https://darbox.live\nADR;TYPE=HOME:;;Tanger;;;MA\nEND:VCARD`;
+                  const blob = new Blob([vcf], { type: 'text/vcard' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url; a.download = 'DarBox-Merouan.vcf'; a.click();
+                }} 
+                className="w-full px-6 py-3.5 bg-[#e8f5ee] hover:bg-[#d1ecd0] text-[#1a7a4a] rounded-full font-bold transition-colors flex items-center justify-center gap-2 border border-[#1a7a4a]/20"
+              >
+                <UserPlus className="w-4 h-4" /> Enregistrer le contact
+              </button>
+              
+              <a 
+                href="https://wa.me/212621429030?text=Bonjour+DarBox%2C+j%27ai+une+question." 
+                target="_blank" rel="noopener noreferrer" 
+                className="w-full px-6 py-3.5 bg-[#1a7a4a] hover:bg-[#22a663] text-white rounded-full font-bold transition-colors flex items-center justify-center gap-2 no-underline"
+              >
+                <MessageCircle className="w-4 h-4" /> Nous contacter sur WhatsApp
+              </a>
             </div>
-            <div className="w-full md:w-auto flex flex-col items-center gap-4">
-              <a href="/assets/Merouan_El_Hattaki.vcf" download className="w-full px-8 py-4 bg-[#E0563B] hover:bg-[#c94930] text-white rounded-full font-bold transition-all shadow-lg flex items-center justify-center gap-3 no-underline group"><UserPlus className="w-5 h-5 group-hover:scale-110 transition-transform" />{t.ctVcard}</a>
-              <button onClick={() => go('hero')} className="text-slate-400 hover:text-white transition-colors underline underline-offset-4 decoration-slate-600 flex items-center gap-1"><ChevronUp className="w-4 h-4" />{t.ctBack}</button>
-            </div>
+            
+            <a 
+              href="mailto:merouan@darbox.live"
+              className="text-sm text-[#F5F0E8] opacity-70 hover:opacity-100 underline underline-offset-4 transition-opacity mt-6 inline-block"
+            >
+              merouan@darbox.live
+            </a>
+          </div>
+          <div className="mt-8">
+            <button onClick={() => go('hero')} className="text-sm opacity-50 hover:opacity-100 transition-opacity">↑ Revenir en haut</button>
           </div>
         </div>
       </section>
