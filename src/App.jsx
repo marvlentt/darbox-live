@@ -83,7 +83,7 @@ export default function App() {
           {/* Secondary & Actions */}
           <div className="flex items-center gap-3">
             <a 
-              href="/assets/DarBox%20—%20Catalogue%202026.pdf" target="_blank" rel="noopener noreferrer" download
+              href="/assets/DarBox_Catalogue_2026.pdf" target="_blank" rel="noopener noreferrer" download
               className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-[.85rem] font-bold transition-all duration-300 bg-white shadow-sm border border-black/[0.08] text-[#0d1117] hover:border-[#1a7a4a]/40 hover:text-[#1a7a4a] hover:-translate-y-[1px] hover:shadow-md`}
             >
               <FileText className="w-[15px] h-[15px]" /> {t.navCatalogue}
@@ -139,7 +139,7 @@ export default function App() {
             <ul className="list-none space-y-2.5">
               <li><Link to="/" className="text-white/65 no-underline text-[.88rem] hover:text-white transition-colors">{t.navHow}</Link></li>
               <li><Link to="/" className="text-white/65 no-underline text-[.88rem] hover:text-white transition-colors">{t.navPlans}</Link></li>
-              <li><a href="/assets/DarBox%20—%20Catalogue%202026.pdf" target="_blank" rel="noopener noreferrer" download className="text-white/65 no-underline text-[.88rem] hover:text-white transition-colors">{t.navCatalogue}</a></li>
+              <li><a href="/assets/DarBox_Catalogue_2026.pdf" target="_blank" rel="noopener noreferrer" download className="text-white/65 no-underline text-[.88rem] hover:text-white transition-colors">{t.navCatalogue}</a></li>
             </ul>
           </div>
           <div>

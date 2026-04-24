@@ -151,8 +151,8 @@ export default function Home({ t, lang, go }) {
             <a href="#offres" onClick={e => { e.preventDefault(); go('offres'); }} className="bg-[#1a7a4a] text-white px-7 py-3.5 rounded-full font-semibold text-[.95rem] no-underline inline-flex items-center gap-2 shadow-[0_4px_20px_rgba(26,122,74,.3)] hover:-translate-y-0.5 transition-all">{t.heroCta1} <ArrowRight className="w-4 h-4" /></a>
             <a href="#how" onClick={e => { e.preventDefault(); go('how'); }} className="ring-2 ring-inset ring-[#d4d4d4] text-[#0d1117] px-6 py-3.5 rounded-full font-semibold text-[.95rem] no-underline hover:ring-[#1a7a4a] hover:bg-[#e8f5ee] hover:text-[#1a7a4a] transition-all">{t.heroCta2}</a>
             <a
-              href="/assets/DarBox%20%E2%80%94%20Catalogue%202026.pdf"
-              download="DarBox — Catalogue 2026.pdf"
+              href="/assets/DarBox_Catalogue_2026.pdf"
+              download="DarBox_Catalogue_2026.pdf"
               className="ring-2 ring-inset ring-[#d4d4d4] text-[#5a5a5a] px-5 py-3.5 rounded-full font-semibold text-[.88rem] no-underline inline-flex items-center gap-2 hover:ring-[#1a7a4a] hover:text-[#1a7a4a] hover:bg-[#e8f5ee] transition-all"
             >
               <Download className="w-4 h-4" />{t.catBtn || 'Télécharger le Catalogue (PDF)'}
@@ -325,8 +325,8 @@ export default function Home({ t, lang, go }) {
           <h3 className="text-2xl font-extrabold text-white mb-3">{t.catTitle || "Besoin d'en discuter en famille ?"}</h3>
           <p className="text-white/50 text-base mb-8 max-w-md mx-auto leading-relaxed">{t.catSub || 'Gardez nos offres sous la main.'}</p>
           <a
-            href="/assets/DarBox%20%E2%80%94%20Catalogue%202026.pdf"
-            download="DarBox-Catalogue-2026.pdf"
+            href="/assets/DarBox_Catalogue_2026.pdf"
+            download="DarBox_Catalogue_2026.pdf"
             className="inline-flex items-center gap-3 px-8 py-4 bg-white text-[#0d1117] rounded-full font-bold text-[.95rem] no-underline hover:bg-[#e8f5ee] hover:scale-[1.03] transition-all shadow-[0_4px_24px_rgba(255,255,255,.1)] group"
           >
             <Download className="w-5 h-5 group-hover:translate-y-0.5 transition-transform" />
