@@ -155,7 +155,7 @@ export default function Home({ t, lang, go }) {
               download="DarBox_Catalogue_2026.pdf"
               className="ring-2 ring-inset ring-[#d4d4d4] text-[#5a5a5a] px-5 py-3.5 rounded-full font-semibold text-[.88rem] no-underline inline-flex items-center gap-2 hover:ring-[#1a7a4a] hover:text-[#1a7a4a] hover:bg-[#e8f5ee] transition-all"
             >
-              <Download className="w-4 h-4" />{t.catBtn || 'Télécharger le Catalogue (PDF)'}
+              {t.catBtn || 'Télécharger le Catalogue (PDF)'}
             </a>
           </div>
           <div className="flex gap-8 mt-12">
@@ -319,9 +319,6 @@ export default function Home({ t, lang, go }) {
       {/* ═══ CATALOGUE DOWNLOAD BLOCK ═══ */}
       <div className="bg-[#0d1117] py-16 px-6 lg:px-[60px] border-t border-white/5">
         <div className="max-w-2xl mx-auto text-center reveal">
-          <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <BookOpen className="w-8 h-8 text-white/80" />
-          </div>
           <h3 className="text-2xl font-extrabold text-white mb-3">{t.catTitle || "Besoin d'en discuter en famille ?"}</h3>
           <p className="text-white/50 text-base mb-8 max-w-md mx-auto leading-relaxed">{t.catSub || 'Gardez nos offres sous la main.'}</p>
           <a
@@ -329,7 +326,6 @@ export default function Home({ t, lang, go }) {
             download="DarBox_Catalogue_2026.pdf"
             className="inline-flex items-center gap-3 px-8 py-4 bg-white text-[#0d1117] rounded-full font-bold text-[.95rem] no-underline hover:bg-[#e8f5ee] hover:scale-[1.03] transition-all shadow-[0_4px_24px_rgba(255,255,255,.1)] group"
           >
-            <Download className="w-5 h-5 group-hover:translate-y-0.5 transition-transform" />
             {t.catBtn || 'Télécharger le Catalogue (PDF)'}
           </a>
         </div>

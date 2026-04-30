@@ -85,7 +85,7 @@ export default function App() {
               href="/assets/DarBox_Catalogue_2026.pdf" target="_blank" rel="noopener noreferrer" download
               className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-[.85rem] font-bold transition-all duration-300 bg-white shadow-sm border border-black/[0.08] text-[#0d1117] hover:border-[#1a7a4a]/40 hover:text-[#1a7a4a] hover:-translate-y-[1px] hover:shadow-md`}
             >
-              <BookOpen className="w-[15px] h-[15px]" /> {t.navCatalogue}
+              {t.navCatalogue}
             </a>
             
             <div className="flex items-center gap-1.5 ml-2">

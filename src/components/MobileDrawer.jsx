@@ -39,10 +39,12 @@ function SecondaryItem({ label, icon: Icon, onClick, active }) {
                     : 'text-[#5a5a5a] hover:bg-[#f7f7f5] hover:text-[#0d1117]'
                   }`}
     >
-      <span className={`flex items-center justify-center w-8 h-8 rounded-xl shrink-0 transition-colors duration-[160ms]
-                        ${active ? 'bg-[#c8edd9]' : 'bg-[#f0f0f0] group-hover:bg-[#e2f0ea]'}`}>
-        <Icon className={`w-4 h-4 ${active ? 'text-[#1a7a4a]' : 'text-[#5a5a5a] group-hover:text-[#1a7a4a]'}`} />
-      </span>
+      {Icon && (
+        <span className={`flex items-center justify-center w-8 h-8 rounded-xl shrink-0 transition-colors duration-[160ms]
+                          ${active ? 'bg-[#c8edd9]' : 'bg-[#f0f0f0] group-hover:bg-[#e2f0ea]'}`}>
+          <Icon className={`w-4 h-4 ${active ? 'text-[#1a7a4a]' : 'text-[#5a5a5a] group-hover:text-[#1a7a4a]'}`} />
+        </span>
+      )}
       <span className="flex-1">{label}</span>
       {active && (
         <span className="w-1.5 h-1.5 rounded-full bg-[#1a7a4a] shrink-0" />
@@ -144,7 +146,6 @@ export default function MobileDrawer({ open, onClose, onLang, go, t, isHome }) {
           {/* SECONDARY NAV */}
           <SecondaryItem
             label={t.navCatalogue}
-            icon={BookOpen}
             active={location.pathname === '/catalogue'}
             onClick={() => { onClose(); navigate('/catalogue'); }}
           />
