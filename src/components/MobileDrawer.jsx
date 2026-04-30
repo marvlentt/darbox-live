@@ -146,14 +146,7 @@ export default function MobileDrawer({ open, onClose, onLang, go, t, isHome }) {
           {/* SECONDARY NAV */}
           <SecondaryItem
             label={t.navCatalogue}
-            active={location.pathname === '/catalogue'}
-            onClick={() => { onClose(); navigate('/catalogue'); }}
-          />
-          <SecondaryItem
-            label="Newsletter"
-            icon={Newspaper}
-            active={location.pathname === '/newsletter'}
-            onClick={() => { onClose(); navigate('/newsletter'); }}
+            onClick={() => { onClose(); window.open('/assets/DarBox_Catalogue_2026.pdf', '_blank'); }}
           />
         </nav>
 

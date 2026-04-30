@@ -1,4 +1,9 @@
 <svg width="110" height="111" viewBox="0 0 110 111" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<style>
+  @media (prefers-color-scheme: dark) {
+    g { filter: invert(1); }
+  }
+</style>
 <mask id="mask0_1_9" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="110" height="111">
 <rect width="109.868" height="110.867" fill="url(#pattern0_1_9)"/>
 </mask>
