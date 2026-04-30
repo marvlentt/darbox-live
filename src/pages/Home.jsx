@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ArrowRight, Download, Mail, Globe, Shield, UserPlus, ChevronUp, Check, MessageCircle, Search, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Download, Mail, Globe, Shield, UserPlus, ChevronUp, Check, MessageCircle, Search, ShieldCheck, BookOpen } from 'lucide-react';
 import { drawerData } from '../drawerData.js';
 import emailjs from '@emailjs/browser';
 
@@ -320,7 +320,7 @@ export default function Home({ t, lang, go }) {
       <div className="bg-[#0d1117] py-16 px-6 lg:px-[60px] border-t border-white/5">
         <div className="max-w-2xl mx-auto text-center reveal">
           <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <span className="text-3xl">📄</span>
+            <BookOpen className="w-8 h-8 text-white/80" />
           </div>
           <h3 className="text-2xl font-extrabold text-white mb-3">{t.catTitle || "Besoin d'en discuter en famille ?"}</h3>
           <p className="text-white/50 text-base mb-8 max-w-md mx-auto leading-relaxed">{t.catSub || 'Gardez nos offres sous la main.'}</p>

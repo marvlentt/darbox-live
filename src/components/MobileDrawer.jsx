@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { X, Globe, FileText, Newspaper, ChevronRight, ArrowRight } from 'lucide-react';
+import { X, Globe, BookOpen, Newspaper, ChevronRight, ArrowRight } from 'lucide-react';
 import DarBoxLogo from './DarBoxLogo.jsx';
 
 /* ─────────────────────────────────────────
@@ -125,7 +125,6 @@ export default function MobileDrawer({ open, onClose, onLang, go, t, isHome }) {
             <>
               <PrimaryItem label={t.navHow}     onClick={() => go('how')}    />
               <PrimaryItem label={t.navPlans}   onClick={() => go('offres')} />
-              <PrimaryItem label={t.navReviews} onClick={() => go('avis')}   />
               <PrimaryItem label={t.navFaq}     onClick={() => go('faq')}    />
             </>
           ) : (
@@ -145,7 +144,7 @@ export default function MobileDrawer({ open, onClose, onLang, go, t, isHome }) {
           {/* SECONDARY NAV */}
           <SecondaryItem
             label={t.navCatalogue}
-            icon={FileText}
+            icon={BookOpen}
             active={location.pathname === '/catalogue'}
             onClick={() => { onClose(); navigate('/catalogue'); }}
           />

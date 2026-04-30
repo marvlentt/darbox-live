@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
-import { Globe, Menu, FileText, Mail } from 'lucide-react';
+import { Globe, Menu, BookOpen, Mail } from 'lucide-react';
 import { T } from './translations.js';
 import Home from './pages/Home.jsx';
 import DarBoxLogo from './components/DarBoxLogo.jsx';
@@ -70,7 +70,6 @@ export default function App() {
               <>
                 <a href="#how" onClick={e => { e.preventDefault(); go('how'); }} className="px-4 py-1.5 rounded-full text-[.85rem] font-bold text-[#5a5a5a] hover:text-[#0d1117] hover:bg-white hover:shadow-sm hover:-translate-y-[1px] transition-all duration-200">{t.navHow}</a>
                 <a href="#offres" onClick={e => { e.preventDefault(); go('offres'); }} className="px-4 py-1.5 rounded-full text-[.85rem] font-bold text-[#5a5a5a] hover:text-[#0d1117] hover:bg-white hover:shadow-sm hover:-translate-y-[1px] transition-all duration-200">{t.navPlans}</a>
-                <a href="#avis" onClick={e => { e.preventDefault(); go('avis'); }} className="px-4 py-1.5 rounded-full text-[.85rem] font-bold text-[#5a5a5a] hover:text-[#0d1117] hover:bg-white hover:shadow-sm hover:-translate-y-[1px] transition-all duration-200">{t.navReviews}</a>
                 <a href="#faq" onClick={e => { e.preventDefault(); go('faq'); }} className="px-4 py-1.5 rounded-full text-[.85rem] font-bold text-[#5a5a5a] hover:text-[#0d1117] hover:bg-white hover:shadow-sm hover:-translate-y-[1px] transition-all duration-200">{t.navFaq}</a>
               </>
             ) : (
@@ -86,7 +85,7 @@ export default function App() {
               href="/assets/DarBox_Catalogue_2026.pdf" target="_blank" rel="noopener noreferrer" download
               className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-[.85rem] font-bold transition-all duration-300 bg-white shadow-sm border border-black/[0.08] text-[#0d1117] hover:border-[#1a7a4a]/40 hover:text-[#1a7a4a] hover:-translate-y-[1px] hover:shadow-md`}
             >
-              <FileText className="w-[15px] h-[15px]" /> {t.navCatalogue}
+              <BookOpen className="w-[15px] h-[15px]" /> {t.navCatalogue}
             </a>
             
             <div className="flex items-center gap-1.5 ml-2">
